@@ -16,6 +16,8 @@ import structlog
 
 from damascus.models.interface import ModelProvider, ModelRequest, ModelResponse
 from damascus.models.providers.ollama import OllamaProvider
+from damascus.models.providers.openrouter import OpenRouterProvider
+from damascus.models.providers.gemini import GeminiProvider
 from damascus.models.router import ModelRouter
 from damascus.shared.errors import NoModelProviderConfiguredError
 
@@ -25,13 +27,14 @@ log = structlog.get_logger(__name__)
 class ModelService:
     """
     Model service that routes to available providers via ModelRouter.
-    V1: Simple priority — Ollama first (local, free, private).
+    Priority: Ollama -> Gemini -> OpenRouter.
     """
 
     def __init__(self) -> None:
         self._providers: list[ModelProvider] = [
             OllamaProvider(),
-            # OpenAI, Anthropic, Gemini, OpenRouter added in Phase 2
+            GeminiProvider(),
+            OpenRouterProvider(),
         ]
         self._router = ModelRouter(self._providers)
 
