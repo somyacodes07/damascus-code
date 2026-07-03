@@ -234,6 +234,7 @@ async def delete_workspace(
             {"workspace_id": workspace_id},
             workspace_id=workspace_id,
         )
+        return Response(status_code=204)
     except DamascusError as exc:
         raise _handle_error(exc) from exc
 

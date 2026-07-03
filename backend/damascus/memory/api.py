@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -159,13 +159,14 @@ async def get_memory(
         raise _handle_error(exc) from exc
 
 
-@router.delete("/memories/{memory_id}", status_code=204)
+@router.delete("/memories/{memory_id}", status_code=204, response_class=Response)
 async def delete_memory(
     memory_id: str,
     session: AsyncSession = Depends(get_session),
-) -> None:
+) -> Response:
     """Delete a memory record."""
     try:
         await memory_service.delete(session, memory_id)
+        return Response(status_code=204)
     except DamascusError as exc:
         raise _handle_error(exc) from exc
