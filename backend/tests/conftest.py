@@ -11,6 +11,14 @@ from sqlalchemy.pool import StaticPool
 from damascus.shared.database import Base
 
 
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.dialects.postgresql import JSONB
+
+@compiles(JSONB, "sqlite")
+def compile_jsonb_sqlite(type_, compiler, **kw):
+    return "JSON"
+
+
 @pytest.fixture(scope="session")
 def anyio_backend():
     return "asyncio"
