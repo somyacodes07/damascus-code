@@ -2,7 +2,7 @@
 
 An intelligence operating system that executes, learns, and evolves.
 
-**[📚 Read the Official Documentation](https://somyacodes07.github.io/damascus-docs/)** *(Update this link to your actual live docs site if different)*
+**[📚 Read the Official Documentation](https://somyacodes07.github.io/damascus-docs/)**
 
 ## About
 
