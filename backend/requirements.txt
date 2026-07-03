@@ -1,0 +1,55 @@
+# Damascus Backend — Python Dependencies
+# =========================================
+# Usage (recommended — virtual env):
+#   python3 -m venv .venv
+#   source .venv/bin/activate
+#   pip install -r requirements.txt
+#
+# Usage (global — not recommended but works):
+#   pip install -r requirements.txt
+
+# Web framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+
+# Data validation and settings
+pydantic==2.8.2
+pydantic-settings==2.4.0
+
+# Database
+sqlalchemy[asyncio]==2.0.35
+asyncpg==0.29.0
+alembic==1.13.3
+
+# Redis
+redis[hiredis]==5.1.0
+
+# Qdrant vector store
+qdrant-client==1.11.3
+
+# NATS messaging
+nats-py==2.7.2
+
+# MinIO object storage
+minio==7.2.9
+
+# Workflow runtime
+langgraph==0.2.55
+langchain-core==0.3.19
+
+# Observability
+opentelemetry-api==1.27.0
+opentelemetry-sdk==1.27.0
+opentelemetry-instrumentation-fastapi==0.48b0
+prometheus-client==0.21.0
+
+# HTTP client (for model providers)
+httpx==0.27.2
+
+# Cryptography
+cryptography==43.0.3
+
+# Utilities
+python-multipart==0.0.12
+python-dateutil==2.9.0
+structlog==24.4.0
