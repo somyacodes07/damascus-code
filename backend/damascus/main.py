@@ -23,7 +23,6 @@ from typing import Any
 import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
 from damascus.config import settings
 from damascus.core.observability.telemetry import configure_logging, metrics_app
@@ -181,11 +180,11 @@ app.mount("/metrics", metrics_app)
 # API Routers — mount all subsystems
 # ---------------------------------------------------------------------------
 
-from damascus.workspace.api import router as workspace_router
-from damascus.memory.api import router as memory_router
 from damascus.agents.api import router as agents_router
+from damascus.memory.api import router as memory_router
 from damascus.models.api import router as models_router
 from damascus.tools.api import router as tools_router
+from damascus.workspace.api import router as workspace_router
 
 app.include_router(workspace_router)
 app.include_router(memory_router)

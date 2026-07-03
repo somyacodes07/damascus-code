@@ -5,14 +5,13 @@ Test configuration and shared fixtures.
 from __future__ import annotations
 
 import pytest
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.pool import StaticPool
 
 from damascus.shared.database import Base
 
-
-from sqlalchemy.ext.compiler import compiles
-from sqlalchemy.dialects.postgresql import JSONB
 
 @compiles(JSONB, "sqlite")
 def compile_jsonb_sqlite(type_, compiler, **kw):
@@ -37,9 +36,9 @@ async def db_session() -> AsyncSession:
     )
 
     # Import all models to register them
+    import damascus.agents.models  # noqa: F401
+    import damascus.memory.models  # noqa: F401
     import damascus.workspace.models  # noqa: F401
-    import damascus.memory.models     # noqa: F401
-    import damascus.agents.models     # noqa: F401
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

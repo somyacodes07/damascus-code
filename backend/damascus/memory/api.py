@@ -21,7 +21,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from damascus.memory.models import MemorySource, MemoryType
 from damascus.memory.service import memory_service
 from damascus.shared.database import get_session
-from damascus.shared.errors import DamascusError, MemoryNotFoundError
+from damascus.shared.errors import DamascusError
 
 router = APIRouter(prefix="/api/v1", tags=["memory"])
 

@@ -1,6 +1,7 @@
 """Tool Registry — stores tool definitions, permissions, capabilities."""
 
 from __future__ import annotations
+
 import structlog
 
 log = structlog.get_logger(__name__)

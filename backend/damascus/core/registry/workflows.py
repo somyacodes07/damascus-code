@@ -10,11 +10,10 @@ Long-term results belong to the Memory Layer.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import structlog
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from damascus.shared.errors import WorkflowNotFoundError
@@ -52,7 +51,7 @@ class WorkflowRegistry:
             "definition": definition,
             "version": 1,
             "created_by": created_by,
-            "created_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": datetime.now(UTC).isoformat(),
         }
 
     async def get(

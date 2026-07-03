@@ -11,15 +11,11 @@ from __future__ import annotations
 
 from textual.app import App, ComposeResult
 from textual.binding import Binding
-from textual.containers import Container, Horizontal, Vertical
 from textual.screen import Screen
 from textual.widgets import (
-    Button,
-    DataTable,
     Footer,
     Header,
     Label,
-    LoadingIndicator,
     Markdown,
     Static,
     TabbedContent,

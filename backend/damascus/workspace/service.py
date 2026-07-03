@@ -12,7 +12,7 @@ Rules:
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import structlog
@@ -26,10 +26,9 @@ from damascus.shared.errors import (
 )
 from damascus.workspace.models import (
     ExecutionStatus,
-    Project,
-    Workspace,
     WorkflowDefinition,
     WorkflowExecution,
+    Workspace,
     WorkspaceStatus,
 )
 
@@ -118,7 +117,7 @@ class WorkspaceService:
             workspace.description = description
         if settings is not None:
             workspace.settings = settings
-        workspace.updated_at = datetime.now(timezone.utc)
+        workspace.updated_at = datetime.now(UTC)
         await session.flush()
         return workspace
 
@@ -126,7 +125,7 @@ class WorkspaceService:
         """Soft-delete a workspace (sets status=DELETED)."""
         workspace = await self.get_workspace(session, workspace_id)
         workspace.status = WorkspaceStatus.DELETED
-        workspace.updated_at = datetime.now(timezone.utc)
+        workspace.updated_at = datetime.now(UTC)
         await session.flush()
         log.info("Deleted workspace", workspace_id=workspace_id)
 
@@ -235,7 +234,7 @@ class WorkspaceService:
         if execution:
             execution.status = ExecutionStatus.COMPLETED
             execution.outputs = outputs
-            execution.completed_at = datetime.now(timezone.utc)
+            execution.completed_at = datetime.now(UTC)
             execution.duration_ms = duration_ms
             await session.flush()
 
@@ -250,7 +249,7 @@ class WorkspaceService:
         if execution:
             execution.status = ExecutionStatus.FAILED
             execution.error = error
-            execution.completed_at = datetime.now(timezone.utc)
+            execution.completed_at = datetime.now(UTC)
             await session.flush()
 
 

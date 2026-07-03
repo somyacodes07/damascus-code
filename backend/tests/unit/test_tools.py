@@ -4,11 +4,12 @@ Unit tests for the Tool service.
 
 from __future__ import annotations
 
-import pytest
 from unittest.mock import AsyncMock, patch
 
-from damascus.tools.service import ToolService
+import pytest
+
 from damascus.tools.interface import RiskLevel
+from damascus.tools.service import ToolService
 
 
 @pytest.fixture

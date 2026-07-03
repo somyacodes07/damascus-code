@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import structlog
@@ -58,7 +58,7 @@ class ScheduledJob:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ScheduledJob":
+    def from_dict(cls, data: dict[str, Any]) -> ScheduledJob:
         return cls(
             job_id=data["job_id"],
             workflow_id=data["workflow_id"],
@@ -108,7 +108,7 @@ class Scheduler:
     async def list_due_jobs(self, now: datetime | None = None) -> list[ScheduledJob]:
         """Return all jobs that are due to run."""
         redis = await get_redis()
-        now_ts = (now or datetime.now(timezone.utc)).timestamp()
+        now_ts = (now or datetime.now(UTC)).timestamp()
         # Get all job IDs with score <= now
         job_ids = await redis.zrangebyscore(_SCHEDULED_SET, "-inf", now_ts)
         jobs = []
@@ -162,11 +162,9 @@ class Scheduler:
 
     async def _dispatch(self, job: ScheduledJob) -> None:
         """Dispatch a due job to the lifecycle manager."""
-        from damascus.core.lifecycle.manager import get_lifecycle_manager
 
         log.info("Dispatching scheduled job", job_id=job.job_id, workflow_id=job.workflow_id)
         try:
-            lifecycle = get_lifecycle_manager()
             # Fetch workflow definition from registry
             # V1: we need to look it up from DB — done via workspace service
             # For now, we store the definition inline in a real implementation

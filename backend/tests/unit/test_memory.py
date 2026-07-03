@@ -5,14 +5,15 @@ Uses in-memory SQLite for fast isolated tests.
 
 from __future__ import annotations
 
-import pytest
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.pool import StaticPool
 from unittest.mock import AsyncMock, patch
 
-from damascus.shared.database import Base
+import pytest
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.pool import StaticPool
+
+from damascus.memory.models import MemorySource, MemoryType
 from damascus.memory.service import MemoryService
-from damascus.memory.models import MemoryType, MemorySource
+from damascus.shared.database import Base
 from damascus.shared.errors import MemoryNotFoundError
 
 

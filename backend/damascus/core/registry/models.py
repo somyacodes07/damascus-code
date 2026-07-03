@@ -1,6 +1,7 @@
 """Model Registry — stores provider info, capabilities, context limits, routing metadata."""
 
 from __future__ import annotations
+
 import structlog
 
 log = structlog.get_logger(__name__)

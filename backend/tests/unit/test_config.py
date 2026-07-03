@@ -5,14 +5,12 @@ Tests the layered config, environment parsing, and validation.
 
 from __future__ import annotations
 
-import os
-import pytest
-
 from damascus.config import Environment, Settings
 
 
-def test_default_settings():
+def test_default_settings(monkeypatch):
     """Configuration should have sensible defaults."""
+    monkeypatch.delenv("DAMASCUS_ENV", raising=False)
     s = Settings()
     assert s.env == Environment.DEVELOPMENT
     assert s.server.port == 8000

@@ -20,8 +20,7 @@ Architecture:
 from __future__ import annotations
 
 import asyncio
-import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, TypedDict
 
 import structlog
@@ -91,7 +90,6 @@ class LangGraphAdapter(IRuntime):
         nodes = workflow_definition.get("nodes", [])
         for node_def in nodes:
             node_id = node_def["id"]
-            node_type = node_def.get("type", "AGENT")
 
             async def make_node_fn(n_def: dict = node_def):
                 async def node_fn(state: WorkflowState) -> WorkflowState:
@@ -149,7 +147,7 @@ class LangGraphAdapter(IRuntime):
         config = {"configurable": {"thread_id": execution_id}}
         asyncio.create_task(compiled.ainvoke(initial_state, config=config))
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return ExecutionState(
             execution_id=execution_id,
             workflow_id=workflow_definition.get("id", ""),
@@ -165,7 +163,7 @@ class LangGraphAdapter(IRuntime):
         """Pause a running workflow. V1: marks status in Redis."""
         redis = await get_redis()
         await redis.set(f"damascus:execution:{execution_id}:command", "PAUSE", ex=3600)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return ExecutionState(
             execution_id=execution_id,
             workflow_id="",
@@ -181,7 +179,7 @@ class LangGraphAdapter(IRuntime):
         """Resume a paused workflow."""
         redis = await get_redis()
         await redis.delete(f"damascus:execution:{execution_id}:command")
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return ExecutionState(
             execution_id=execution_id,
             workflow_id="",
@@ -198,7 +196,7 @@ class LangGraphAdapter(IRuntime):
         redis = await get_redis()
         await redis.set(f"damascus:execution:{execution_id}:command", "CANCEL", ex=3600)
         self._graphs.pop(execution_id, None)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return ExecutionState(
             execution_id=execution_id,
             workflow_id="",
@@ -214,7 +212,7 @@ class LangGraphAdapter(IRuntime):
         """Return the current execution state from the checkpointer."""
         config = {"configurable": {"thread_id": execution_id}}
         graph = self._graphs.get(execution_id)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         if graph is None:
             return ExecutionState(

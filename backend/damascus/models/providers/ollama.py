@@ -10,8 +10,8 @@ Pull a model first: ollama pull llama3.1
 
 from __future__ import annotations
 
-import structlog
 import httpx
+import structlog
 
 from damascus.config import settings
 from damascus.models.interface import ModelProvider, ModelRequest, ModelResponse

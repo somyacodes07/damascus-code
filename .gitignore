@@ -74,5 +74,3 @@ docker/data/
 *.log
 logs/
 
-# Alembic
-backend/alembic.ini

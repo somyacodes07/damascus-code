@@ -12,20 +12,18 @@ Benefits:
 
 Usage:
     from damascus.core.events.bus import event_bus
-    
+
     # Publish
     await event_bus.publish(EventSubject.WORKFLOW_STARTED, {
-        "execution_id": "exec_abc123",
         "workspace_id": "ws_abc123",
     }, workspace_id="ws_abc123")
-    
+
     # Subscribe (typically done at application startup)
     await event_bus.subscribe(EventSubject.WORKFLOW_COMPLETED, my_handler)
 """
 
 from __future__ import annotations
 
-import asyncio
 from collections.abc import Callable, Coroutine
 from typing import Any
 

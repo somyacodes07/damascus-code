@@ -56,6 +56,6 @@ def health():
 def show_config():
     """Show the current CLI configuration."""
     api_url = os.getenv("DAMASCUS_API_URL", "http://localhost:8000")
-    console.print(f"[bold]Damascus CLI Configuration[/bold]")
+    console.print("[bold]Damascus CLI Configuration[/bold]")
     console.print(f"  API URL:  {api_url}")
-    console.print(f"  Version:  0.1.0")
+    console.print("  Version:  0.1.0")

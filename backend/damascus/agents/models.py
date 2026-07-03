@@ -7,7 +7,7 @@ Defines the AgentProfile and AgentPerformance database models.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text
@@ -28,7 +28,7 @@ def _new_agent_id() -> str:
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class AgentProfile(Base):
@@ -52,7 +52,7 @@ class AgentProfile(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
-    performance_records: Mapped[list["AgentPerformance"]] = relationship(
+    performance_records: Mapped[list[AgentPerformance]] = relationship(
         "AgentPerformance", back_populates="agent", cascade="all, delete-orphan"
     )
 
@@ -71,4 +71,4 @@ class AgentPerformance(Base):
     token_usage: Mapped[int] = mapped_column(Integer, default=0)
     recorded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
-    agent: Mapped["AgentProfile"] = relationship("AgentProfile", back_populates="performance_records")
+    agent: Mapped[AgentProfile] = relationship("AgentProfile", back_populates="performance_records")

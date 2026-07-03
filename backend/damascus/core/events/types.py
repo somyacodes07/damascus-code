@@ -13,7 +13,7 @@ All events are serialized as JSON and published via NATS JetStream.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
@@ -73,7 +73,7 @@ class DamascusEvent:
     subject: str
     payload: dict[str, Any]
     workspace_id: str
-    occurred_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    occurred_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     event_id: str = ""
 
     def __post_init__(self) -> None:

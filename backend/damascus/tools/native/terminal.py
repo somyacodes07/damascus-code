@@ -14,7 +14,6 @@ Security constraints:
 from __future__ import annotations
 
 import asyncio
-import shlex
 from typing import Any
 
 import structlog
@@ -78,7 +77,7 @@ class TerminalTool(Tool):
                 metadata={"return_code": proc.returncode, "command": command},
             )
 
-        except asyncio.TimeoutError:
+        except TimeoutError:
             log.warning("Terminal command timed out", command=command[:200], timeout=timeout)
             return ToolResult(
                 success=False,

@@ -11,17 +11,18 @@ import asyncio
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlalchemy import pool
+from sqlalchemy.ext.asyncio import async_engine_from_config
 
-# Import all models so Alembic can detect them in Base.metadata
-from damascus.shared.database import Base
-from damascus.config import settings
+import damascus.agents.models  # noqa: F401
+import damascus.memory.models  # noqa: F401
 
 # Import all models to register them with Base
 import damascus.workspace.models  # noqa: F401
-import damascus.memory.models     # noqa: F401
-import damascus.agents.models     # noqa: F401
+from damascus.config import settings
+
+# Import all models so Alembic can detect them in Base.metadata
+from damascus.shared.database import Base
 
 # Alembic Config object
 config = context.config

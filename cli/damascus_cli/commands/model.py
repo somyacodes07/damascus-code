@@ -10,7 +10,6 @@ import typer
 from rich.console import Console
 
 from damascus_cli.client import DamascusClient, run_async
-from damascus_cli.output.console import success, error, print_key_value, print_table
 
 app = typer.Typer(help="Manage and use AI model providers.")
 console = Console()

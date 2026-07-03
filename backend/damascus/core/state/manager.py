@@ -11,8 +11,7 @@ Long-term memory belongs to the Memory Layer, NOT here.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
-from typing import Any
+from datetime import UTC, datetime
 
 import structlog
 
@@ -50,7 +49,7 @@ class StateManager:
             "current_node": state.current_node,
             "shared_state": json.dumps(state.shared_state),
             "started_at": state.started_at.isoformat(),
-            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(UTC).isoformat(),
             "error": state.error or "",
         }
         await redis.hset(key, mapping=payload)
@@ -88,7 +87,7 @@ class StateManager:
         key = _EXECUTION_KEY.format(execution_id=execution_id)
         updates: dict[str, str] = {
             "status": status.value,
-            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(UTC).isoformat(),
         }
         if error is not None:
             updates["error"] = error

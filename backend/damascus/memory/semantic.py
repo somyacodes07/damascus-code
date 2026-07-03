@@ -114,7 +114,7 @@ class SemanticMemory:
             return []
 
         client = await get_qdrant()
-        from qdrant_client.models import Filter, FieldCondition, MatchValue
+        from qdrant_client.models import FieldCondition, Filter, MatchValue
 
         results = await client.search(
             collection_name=settings.qdrant.collection_memories,

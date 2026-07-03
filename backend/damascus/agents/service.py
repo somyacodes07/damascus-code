@@ -7,9 +7,9 @@ Agents are profiles that define how AI agents behave within workflow nodes.
 
 from __future__ import annotations
 
+import structlog
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-import structlog
 
 from damascus.agents.models import AgentProfile, AgentStatus
 from damascus.shared.errors import AgentNotFoundError

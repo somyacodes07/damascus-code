@@ -15,11 +15,10 @@ from typing import Any
 import structlog
 
 from damascus.models.interface import ModelProvider, ModelRequest, ModelResponse
+from damascus.models.providers.gemini import GeminiProvider
 from damascus.models.providers.ollama import OllamaProvider
 from damascus.models.providers.openrouter import OpenRouterProvider
-from damascus.models.providers.gemini import GeminiProvider
 from damascus.models.router import ModelRouter
-from damascus.shared.errors import NoModelProviderConfiguredError
 
 log = structlog.get_logger(__name__)
 

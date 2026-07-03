@@ -10,7 +10,7 @@ Phase 2: Immutable tamper-evident audit log with cryptographic chaining.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
@@ -57,7 +57,7 @@ class AuditService:
             resource_type=resource_type,
             resource_id=resource_id,
             outcome=outcome,
-            timestamp=datetime.now(timezone.utc).isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
             details=details or {},
         )
 

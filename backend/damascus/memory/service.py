@@ -20,9 +20,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from damascus.core.events.bus import event_bus
 from damascus.core.events.types import EventSubject
 from damascus.memory.episodic import episodic_memory
-from damascus.memory.models import MemoryRecord, MemorySource, MemoryStatus, MemoryType
+from damascus.memory.models import MemoryRecord, MemorySource, MemoryType
 from damascus.memory.semantic import semantic_memory
-from damascus.memory.working import working_memory
 from damascus.shared.errors import MemoryNotFoundError
 
 log = structlog.get_logger(__name__)

@@ -6,12 +6,12 @@ Uses in-memory SQLite for fast isolated tests.
 from __future__ import annotations
 
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
 
 from damascus.shared.database import Base
+from damascus.shared.errors import WorkspaceAlreadyExistsError, WorkspaceNotFoundError
 from damascus.workspace.service import WorkspaceService
-from damascus.shared.errors import WorkspaceNotFoundError, WorkspaceAlreadyExistsError
 
 
 @pytest.fixture

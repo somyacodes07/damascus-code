@@ -25,10 +25,8 @@ from damascus.core.lifecycle.manager import get_lifecycle_manager
 from damascus.shared.database import get_session
 from damascus.shared.errors import (
     DamascusError,
-    WorkflowNotFoundError,
-    WorkspaceNotFoundError,
 )
-from damascus.workspace.models import Workspace, WorkflowDefinition
+from damascus.workspace.models import WorkflowDefinition, Workspace
 from damascus.workspace.service import workspace_service
 
 router = APIRouter(prefix="/api/v1", tags=["workspaces"])
@@ -60,7 +58,7 @@ class WorkspaceResponse(BaseModel):
     updated_at: str
 
     @classmethod
-    def from_orm(cls, ws: Workspace) -> "WorkspaceResponse":
+    def from_orm(cls, ws: Workspace) -> WorkspaceResponse:
         return cls(
             id=ws.id,
             name=ws.name,
@@ -105,7 +103,7 @@ class WorkflowResponse(BaseModel):
     updated_at: str
 
     @classmethod
-    def from_orm(cls, wf: WorkflowDefinition) -> "WorkflowResponse":
+    def from_orm(cls, wf: WorkflowDefinition) -> WorkflowResponse:
         return cls(
             id=wf.id,
             workspace_id=wf.workspace_id,

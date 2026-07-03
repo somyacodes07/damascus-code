@@ -9,8 +9,8 @@ Get a free key: https://aistudio.google.com/
 
 from __future__ import annotations
 
-import structlog
 import httpx
+import structlog
 
 from damascus.config import settings
 from damascus.models.interface import ModelProvider, ModelRequest, ModelResponse

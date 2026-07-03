@@ -7,7 +7,6 @@ Risk level: MEDIUM — read is LOW, write is MEDIUM.
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import Any
 

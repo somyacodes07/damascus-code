@@ -6,13 +6,12 @@ Implements: damascus agent [list|create|get]
 
 from __future__ import annotations
 
-from typing import Optional
 
 import typer
 from rich.console import Console
 
 from damascus_cli.client import DamascusClient, run_async
-from damascus_cli.output.console import print_table, success, error, print_key_value
+from damascus_cli.output.console import print_table, print_key_value
 
 app = typer.Typer(help="Manage agent profiles.")
 console = Console()

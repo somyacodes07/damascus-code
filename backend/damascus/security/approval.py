@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import json
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
@@ -67,7 +67,7 @@ class ApprovalService:
             "execution_id": execution_id,
             "reason": reason,
             "status": ApprovalStatus.PENDING,
-            "requested_at": datetime.now(timezone.utc).isoformat(),
+            "requested_at": datetime.now(UTC).isoformat(),
         }
         await redis.set(key, json.dumps(payload), ex=_APPROVAL_TTL)
         log.info(
@@ -108,7 +108,7 @@ class ApprovalService:
             data = json.loads(raw)
             data["status"] = status
             data["approver_id"] = approver_id
-            data["resolved_at"] = datetime.now(timezone.utc).isoformat()
+            data["resolved_at"] = datetime.now(UTC).isoformat()
             await redis.set(key, json.dumps(data), ex=_APPROVAL_TTL)
 
 

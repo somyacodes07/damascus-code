@@ -15,7 +15,7 @@ ID format: ws_abc123, proj_abc123, wf_abc123, exec_abc123, node_abc123
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
@@ -31,7 +31,6 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from damascus.shared.database import Base
-
 
 # ---------------------------------------------------------------------------
 # Enums (stored as strings in DB)
@@ -85,7 +84,7 @@ def _new_id(prefix: str) -> str:
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 # ---------------------------------------------------------------------------
@@ -109,8 +108,8 @@ class Workspace(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
     # Relationships
-    projects: Mapped[list["Project"]] = relationship("Project", back_populates="workspace", cascade="all, delete-orphan")
-    workflow_definitions: Mapped[list["WorkflowDefinition"]] = relationship(
+    projects: Mapped[list[Project]] = relationship("Project", back_populates="workspace", cascade="all, delete-orphan")
+    workflow_definitions: Mapped[list[WorkflowDefinition]] = relationship(
         "WorkflowDefinition", back_populates="workspace", cascade="all, delete-orphan"
     )
 
@@ -134,7 +133,7 @@ class Project(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
-    workspace: Mapped["Workspace"] = relationship("Workspace", back_populates="projects")
+    workspace: Mapped[Workspace] = relationship("Workspace", back_populates="projects")
 
 
 class WorkflowDefinition(Base):
@@ -158,8 +157,8 @@ class WorkflowDefinition(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
-    workspace: Mapped["Workspace"] = relationship("Workspace", back_populates="workflow_definitions")
-    executions: Mapped[list["WorkflowExecution"]] = relationship(
+    workspace: Mapped[Workspace] = relationship("Workspace", back_populates="workflow_definitions")
+    executions: Mapped[list[WorkflowExecution]] = relationship(
         "WorkflowExecution", back_populates="workflow_definition", cascade="all, delete-orphan"
     )
 
@@ -188,6 +187,6 @@ class WorkflowExecution(Base):
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     duration_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
-    workflow_definition: Mapped["WorkflowDefinition"] = relationship(
+    workflow_definition: Mapped[WorkflowDefinition] = relationship(
         "WorkflowDefinition", back_populates="executions"
     )

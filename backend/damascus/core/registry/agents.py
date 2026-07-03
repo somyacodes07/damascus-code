@@ -1,6 +1,7 @@
 """Agent Registry — stores agent definitions, capabilities, performance metrics."""
 
 from __future__ import annotations
+
 import structlog
 
 log = structlog.get_logger(__name__)

@@ -48,7 +48,6 @@ def launch_tui():
 @app.command("version")
 def version():
     """Show Damascus version."""
-    import typer
     from rich.console import Console
     Console().print("[bold cyan]Damascus CLI v0.1.0[/bold cyan]")
 

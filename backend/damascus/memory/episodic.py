@@ -12,8 +12,7 @@ Storage: PostgreSQL (MemoryRecord table with type=EPISODIC)
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from typing import Any
+from datetime import UTC, datetime
 
 import structlog
 from sqlalchemy import select
@@ -65,7 +64,7 @@ class EpisodicMemory:
         if record is None:
             raise MemoryNotFoundError(memory_id=memory_id)
         # Update access tracking
-        record.accessed_at = datetime.now(timezone.utc)
+        record.accessed_at = datetime.now(UTC)
         record.access_count += 1
         await session.flush()
         return record
@@ -103,7 +102,7 @@ class EpisodicMemory:
         record = await session.get(MemoryRecord, memory_id)
         if record:
             record.status = MemoryStatus.ARCHIVED
-            record.updated_at = datetime.now(timezone.utc)
+            record.updated_at = datetime.now(UTC)
             await session.flush()
 
 

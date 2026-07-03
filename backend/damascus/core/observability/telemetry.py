@@ -105,7 +105,7 @@ class ExecutionTimer:
         self._workspace_id = workspace_id
         self._start = 0.0
 
-    def __enter__(self) -> "ExecutionTimer":
+    def __enter__(self) -> ExecutionTimer:
         self._start = time.perf_counter()
         return self
 
