@@ -4,7 +4,8 @@ Model Service — Provider Router
 Routes model generation requests to the correct provider.
 In V1, only Ollama is supported. Multi-model routing comes in Phase 2.
 
-The service returns the first available enabled provider by default.
+Uses ModelRouter for intelligent provider selection based on model name prefix
+or priority-based fallback.
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ import structlog
 
 from damascus.models.interface import ModelProvider, ModelRequest, ModelResponse
 from damascus.models.providers.ollama import OllamaProvider
+from damascus.models.router import ModelRouter
 from damascus.shared.errors import NoModelProviderConfiguredError
 
 log = structlog.get_logger(__name__)
@@ -22,7 +24,7 @@ log = structlog.get_logger(__name__)
 
 class ModelService:
     """
-    Model service that routes to available providers.
+    Model service that routes to available providers via ModelRouter.
     V1: Simple priority — Ollama first (local, free, private).
     """
 
@@ -31,19 +33,13 @@ class ModelService:
             OllamaProvider(),
             # OpenAI, Anthropic, Gemini, OpenRouter added in Phase 2
         ]
-
-    async def get_default_provider(self) -> ModelProvider:
-        """Return the first available provider. Raises if none configured."""
-        for provider in self._providers:
-            if await provider.is_available():
-                return provider
-        raise NoModelProviderConfiguredError()
+        self._router = ModelRouter(self._providers)
 
     async def generate(self, request: ModelRequest) -> ModelResponse:
-        """Generate text using the appropriate provider."""
-        provider = await self.get_default_provider()
-        log.info("Generating text", provider=provider.provider_name, model=request.model or "default")
-        return await provider.generate(request)
+        """Generate text using the router to select the best provider."""
+        provider, routed_request = await self._router.select_provider(request)
+        log.info("Generating text", provider=provider.provider_name, model=routed_request.model or "default")
+        return await provider.generate(routed_request)
 
     async def list_available_models(self) -> dict[str, list[str]]:
         """Return available models grouped by provider."""
@@ -60,6 +56,11 @@ class ModelService:
             status[provider.provider_name] = await provider.is_available()
         return status
 
+    async def routing_summary(self) -> dict[str, Any]:
+        """Return router state for observability."""
+        return await self._router.route_summary()
+
 
 # Module-level singleton
 model_service = ModelService()
+
