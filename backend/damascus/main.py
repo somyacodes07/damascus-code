@@ -33,6 +33,7 @@ log = structlog.get_logger(__name__)
 # Application startup / shutdown lifecycle
 # ---------------------------------------------------------------------------
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
@@ -54,11 +55,10 @@ async def lifespan(app: FastAPI):
     # PostgreSQL
     try:
         from damascus.shared.database import get_engine
+
         engine = get_engine()
         async with engine.connect() as conn:
-            await conn.execute(
-                __import__("sqlalchemy", fromlist=["text"]).text("SELECT 1")
-            )
+            await conn.execute(__import__("sqlalchemy", fromlist=["text"]).text("SELECT 1"))
         log.info("PostgreSQL connected")
     except Exception as exc:
         startup_errors.append(f"PostgreSQL: {exc}")
@@ -67,6 +67,7 @@ async def lifespan(app: FastAPI):
     # Redis
     try:
         from damascus.shared.cache import ping_redis
+
         if await ping_redis():
             log.info("Redis connected")
         else:
@@ -78,6 +79,7 @@ async def lifespan(app: FastAPI):
     # Qdrant
     try:
         from damascus.shared.vector import ensure_collections, ping_qdrant
+
         if await ping_qdrant():
             await ensure_collections()
             log.info("Qdrant connected and collections initialized")
@@ -90,6 +92,7 @@ async def lifespan(app: FastAPI):
     # NATS
     try:
         from damascus.shared.messaging import ping_nats
+
         if await ping_nats():
             log.info("NATS connected")
         else:
@@ -101,6 +104,7 @@ async def lifespan(app: FastAPI):
     # MinIO
     try:
         from damascus.shared.storage import ensure_buckets, ping_storage
+
         if ping_storage():
             await ensure_buckets()
             log.info("MinIO connected and buckets initialized")
@@ -123,24 +127,28 @@ async def lifespan(app: FastAPI):
 
     try:
         from damascus.shared.database import close_engine
+
         await close_engine()
     except Exception as exc:
         log.warning("Error closing PostgreSQL", error=str(exc))
 
     try:
         from damascus.shared.cache import close_redis
+
         await close_redis()
     except Exception as exc:
         log.warning("Error closing Redis", error=str(exc))
 
     try:
         from damascus.shared.messaging import close_nats
+
         await close_nats()
     except Exception as exc:
         log.warning("Error closing NATS", error=str(exc))
 
     try:
         from damascus.shared.vector import close_qdrant
+
         await close_qdrant()
     except Exception as exc:
         log.warning("Error closing Qdrant", error=str(exc))
@@ -219,6 +227,7 @@ async def health() -> dict[str, Any]:
     # Check Redis
     try:
         from damascus.shared.cache import ping_redis
+
         checks["services"]["redis"] = "healthy" if await ping_redis() else "unhealthy"
     except Exception:
         checks["services"]["redis"] = "unhealthy"
@@ -226,6 +235,7 @@ async def health() -> dict[str, Any]:
     # Check Qdrant
     try:
         from damascus.shared.vector import ping_qdrant
+
         checks["services"]["qdrant"] = "healthy" if await ping_qdrant() else "unhealthy"
     except Exception:
         checks["services"]["qdrant"] = "unhealthy"
@@ -233,6 +243,7 @@ async def health() -> dict[str, Any]:
     # Check NATS
     try:
         from damascus.shared.messaging import ping_nats
+
         checks["services"]["nats"] = "healthy" if await ping_nats() else "unhealthy"
     except Exception:
         checks["services"]["nats"] = "unhealthy"
@@ -240,6 +251,7 @@ async def health() -> dict[str, Any]:
     # Check MinIO
     try:
         from damascus.shared.storage import ping_storage
+
         checks["services"]["minio"] = "healthy" if ping_storage() else "unhealthy"
     except Exception:
         checks["services"]["minio"] = "unhealthy"
@@ -247,6 +259,7 @@ async def health() -> dict[str, Any]:
     # Check model providers
     try:
         from damascus.models.service import model_service
+
         provider_health = await model_service.health()
         checks["services"]["models"] = provider_health
     except Exception:

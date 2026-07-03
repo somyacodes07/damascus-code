@@ -35,6 +35,7 @@ router = APIRouter(prefix="/api/v1", tags=["workspaces"])
 # Pydantic request/response schemas
 # ---------------------------------------------------------------------------
 
+
 class WorkspaceCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
     description: str = Field(default="", max_length=2000)
@@ -121,6 +122,7 @@ class WorkflowResponse(BaseModel):
 # Error handling helper
 # ---------------------------------------------------------------------------
 
+
 def _handle_error(exc: DamascusError) -> HTTPException:
     status_map = {
         "WORKSPACE_NOT_FOUND": 404,
@@ -140,6 +142,7 @@ def _handle_error(exc: DamascusError) -> HTTPException:
 # ---------------------------------------------------------------------------
 # Workspace endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.get("/workspaces")
 async def list_workspaces(
@@ -240,6 +243,7 @@ async def delete_workspace(
 # ---------------------------------------------------------------------------
 # Workflow endpoints
 # ---------------------------------------------------------------------------
+
 
 @router.get("/workspaces/{workspace_id}/workflows")
 async def list_workflows(

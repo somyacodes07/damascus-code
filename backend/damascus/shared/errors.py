@@ -18,6 +18,7 @@ class DamascusError(Exception):
     Base exception for all Damascus errors.
     Every subclass must provide a `code` class attribute.
     """
+
     code: str = "DAMASCUS_ERROR"
     message: str = "An internal Damascus error occurred."
 
@@ -33,6 +34,7 @@ class DamascusError(Exception):
 # ---------------------------------------------------------------------------
 # Not Found Errors
 # ---------------------------------------------------------------------------
+
 
 class NotFoundError(DamascusError):
     code = "NOT_FOUND"
@@ -68,6 +70,7 @@ class ExecutionNotFoundError(NotFoundError):
 # Conflict Errors
 # ---------------------------------------------------------------------------
 
+
 class ConflictError(DamascusError):
     code = "CONFLICT"
     message = "A resource with this identifier already exists."
@@ -87,6 +90,7 @@ class WorkflowAlreadyExistsError(ConflictError):
 # Validation Errors
 # ---------------------------------------------------------------------------
 
+
 class ValidationError(DamascusError):
     code = "VALIDATION_ERROR"
     message = "The provided data failed validation."
@@ -101,6 +105,7 @@ class InvalidWorkflowDefinitionError(ValidationError):
 # Authorization Errors
 # ---------------------------------------------------------------------------
 
+
 class AuthorizationError(DamascusError):
     code = "PERMISSION_DENIED"
     message = "You do not have permission to perform this action."
@@ -114,6 +119,7 @@ class ApprovalRequiredError(DamascusError):
 # ---------------------------------------------------------------------------
 # Infrastructure Errors
 # ---------------------------------------------------------------------------
+
 
 class InfrastructureError(DamascusError):
     code = "INFRASTRUCTURE_ERROR"
@@ -144,6 +150,7 @@ class VectorStoreError(InfrastructureError):
 # Model Provider Errors
 # ---------------------------------------------------------------------------
 
+
 class ModelProviderError(DamascusError):
     code = "MODEL_PROVIDER_ERROR"
     message = "A model provider error occurred."
@@ -162,6 +169,7 @@ class NoModelProviderConfiguredError(ModelProviderError):
 # ---------------------------------------------------------------------------
 # Execution Errors
 # ---------------------------------------------------------------------------
+
 
 class ExecutionError(DamascusError):
     code = "EXECUTION_ERROR"

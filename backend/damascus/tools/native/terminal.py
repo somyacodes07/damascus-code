@@ -44,7 +44,9 @@ class TerminalTool(Tool):
     def risk_level(self) -> RiskLevel:
         return RiskLevel.HIGH
 
-    async def execute(self, *, command: str, timeout: int = _DEFAULT_TIMEOUT, **_: Any) -> ToolResult:
+    async def execute(
+        self, *, command: str, timeout: int = _DEFAULT_TIMEOUT, **_: Any
+    ) -> ToolResult:
         """Execute a shell command asynchronously with a timeout."""
         log.info("Executing terminal command", command=command[:200])
 
@@ -102,7 +104,11 @@ class TerminalTool(Tool):
                 "type": "object",
                 "properties": {
                     "command": {"type": "string", "description": "The shell command to execute"},
-                    "timeout": {"type": "integer", "description": "Timeout in seconds", "default": _DEFAULT_TIMEOUT},
+                    "timeout": {
+                        "type": "integer",
+                        "description": "Timeout in seconds",
+                        "default": _DEFAULT_TIMEOUT,
+                    },
                 },
                 "required": ["command"],
             },

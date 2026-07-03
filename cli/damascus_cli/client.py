@@ -42,12 +42,16 @@ class DamascusClient:
     # ------------------------------------------------------------------
 
     async def list_workspaces(self, page: int = 1, per_page: int = 20) -> dict[str, Any]:
-        resp = await self._client.get("/api/v1/workspaces", params={"page": page, "per_page": per_page})
+        resp = await self._client.get(
+            "/api/v1/workspaces", params={"page": page, "per_page": per_page}
+        )
         resp.raise_for_status()
         return resp.json()
 
     async def create_workspace(self, name: str, description: str = "") -> dict[str, Any]:
-        resp = await self._client.post("/api/v1/workspaces", json={"name": name, "description": description})
+        resp = await self._client.post(
+            "/api/v1/workspaces", json={"name": name, "description": description}
+        )
         resp.raise_for_status()
         return resp.json()
 
@@ -69,7 +73,9 @@ class DamascusClient:
         resp.raise_for_status()
         return resp.json()
 
-    async def execute_workflow(self, workflow_id: str, inputs: dict[str, Any] | None = None) -> dict[str, Any]:
+    async def execute_workflow(
+        self, workflow_id: str, inputs: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         resp = await self._client.post(
             f"/api/v1/workflows/{workflow_id}/execute",
             json={"inputs": inputs or {}},
@@ -81,7 +87,9 @@ class DamascusClient:
     # Memory
     # ------------------------------------------------------------------
 
-    async def search_memories(self, workspace_id: str, query: str, limit: int = 10) -> dict[str, Any]:
+    async def search_memories(
+        self, workspace_id: str, query: str, limit: int = 10
+    ) -> dict[str, Any]:
         resp = await self._client.get(
             "/api/v1/memories",
             params={"workspace_id": workspace_id, "query": query, "per_page": limit},
@@ -89,7 +97,9 @@ class DamascusClient:
         resp.raise_for_status()
         return resp.json()
 
-    async def list_memories(self, workspace_id: str, page: int = 1, per_page: int = 20) -> dict[str, Any]:
+    async def list_memories(
+        self, workspace_id: str, page: int = 1, per_page: int = 20
+    ) -> dict[str, Any]:
         resp = await self._client.get(
             "/api/v1/memories",
             params={"workspace_id": workspace_id, "page": page, "per_page": per_page},

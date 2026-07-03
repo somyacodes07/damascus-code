@@ -18,10 +18,13 @@ def skip_if_no_backend():
     """Skip test if backend is not running."""
     try:
         import httpx as hx
+
         with hx.Client(timeout=2.0) as client:
             client.get(f"{BACKEND_URL}/health")
     except Exception:
-        pytest.skip("Backend not running — start with: cd backend && poetry run uvicorn damascus.main:app --reload")
+        pytest.skip(
+            "Backend not running — start with: cd backend && poetry run uvicorn damascus.main:app --reload"
+        )
 
 
 @pytest.mark.asyncio

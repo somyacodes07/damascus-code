@@ -27,6 +27,7 @@ from textual.widgets import (
 # Dashboard Screen
 # ---------------------------------------------------------------------------
 
+
 class DashboardScreen(Screen):
     """Main dashboard showing system status and active workflows."""
 
@@ -98,12 +99,16 @@ class _MemoryPanel(Static):
 
     def compose(self) -> ComposeResult:
         yield Label("[bold]Memory Browser[/bold]", markup=True)
-        yield Label("[dim]Use `damascus memory search <workspace_id> <query>` to search memories.[/dim]", markup=True)
+        yield Label(
+            "[dim]Use `damascus memory search <workspace_id> <query>` to search memories.[/dim]",
+            markup=True,
+        )
 
 
 # ---------------------------------------------------------------------------
 # Main Textual Application
 # ---------------------------------------------------------------------------
+
 
 class DamascusApp(App):
     """

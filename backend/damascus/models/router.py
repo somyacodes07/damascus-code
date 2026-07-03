@@ -82,7 +82,9 @@ class ModelRouter:
                         messages=request.messages,
                         options=request.options,
                     )
-                log.warning("Requested provider not available, falling back", provider=provider_name)
+                log.warning(
+                    "Requested provider not available, falling back", provider=provider_name
+                )
 
         # Priority-based fallback
         for provider in self._providers:
@@ -91,6 +93,7 @@ class ModelRouter:
                 return provider, request
 
         from damascus.shared.errors import NoModelProviderConfiguredError
+
         raise NoModelProviderConfiguredError()
 
     async def route_summary(self) -> dict[str, Any]:

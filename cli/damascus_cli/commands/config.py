@@ -21,6 +21,7 @@ console = Console()
 @app.command("health")
 def health():
     """Check the health of all Damascus services."""
+
     async def _run():
         async with DamascusClient() as client:
             data = await client.health()
@@ -49,6 +50,7 @@ def health():
                     color_str = "green" if svc_status == "healthy" else "red"
                     table.add_row(name, f"[{color_str}]{icon} {svc_status}[/{color_str}]")
             console.print(table)
+
     run_async(_run())
 
 

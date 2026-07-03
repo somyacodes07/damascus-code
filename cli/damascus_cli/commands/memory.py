@@ -23,6 +23,7 @@ def search_memories(
     limit: int = typer.Option(10, "--limit", "-n"),
 ):
     """Search memories by semantic similarity."""
+
     async def _run():
         async with DamascusClient() as client:
             result = await client.search_memories(workspace_id, query, limit)
@@ -30,7 +31,9 @@ def search_memories(
         if not items:
             console.print("[dim]No matching memories found.[/dim]")
             return
-        table = Table(title=f"Memory Search: '{query}'", show_header=True, header_style="bold magenta")
+        table = Table(
+            title=f"Memory Search: '{query}'", show_header=True, header_style="bold magenta"
+        )
         table.add_column("Score", width=8)
         table.add_column("Summary")
         table.add_column("Tags")
@@ -40,6 +43,7 @@ def search_memories(
             tags = ", ".join(m.get("tags", []))
             table.add_row(score, summary, tags)
         console.print(table)
+
     run_async(_run())
 
 
@@ -49,6 +53,7 @@ def list_memories(
     page: int = typer.Option(1, "--page", "-p"),
 ):
     """List all memories in a workspace."""
+
     async def _run():
         async with DamascusClient() as client:
             result = await client.list_memories(workspace_id, page=page)
@@ -67,4 +72,5 @@ def list_memories(
             table.add_row(m["id"], m.get("type", ""), summary, f"{m.get('importance', 0):.1f}")
         console.print(table)
         console.print(f"[dim]Total: {pagination.get('total', 0)} memories[/dim]")
+
     run_async(_run())

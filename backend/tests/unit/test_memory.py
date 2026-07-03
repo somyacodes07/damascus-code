@@ -43,7 +43,11 @@ def service():
 @pytest.mark.asyncio
 async def test_store_episodic_memory(session, service):
     """Should store an episodic memory and return a record with valid ID."""
-    with patch("damascus.memory.semantic.SemanticMemory.store_embedding", new_callable=AsyncMock, return_value=None):
+    with patch(
+        "damascus.memory.semantic.SemanticMemory.store_embedding",
+        new_callable=AsyncMock,
+        return_value=None,
+    ):
         with patch("damascus.core.events.bus.EventBus.publish", new_callable=AsyncMock):
             record = await service.store(
                 session,
@@ -68,7 +72,11 @@ async def test_store_episodic_memory(session, service):
 @pytest.mark.asyncio
 async def test_get_memory_increments_access_count(session, service):
     """Retrieving a memory should increment its access count."""
-    with patch("damascus.memory.semantic.SemanticMemory.store_embedding", new_callable=AsyncMock, return_value=None):
+    with patch(
+        "damascus.memory.semantic.SemanticMemory.store_embedding",
+        new_callable=AsyncMock,
+        return_value=None,
+    ):
         with patch("damascus.core.events.bus.EventBus.publish", new_callable=AsyncMock):
             record = await service.store(
                 session,
@@ -97,7 +105,11 @@ async def test_get_nonexistent_memory_raises(session, service):
 @pytest.mark.asyncio
 async def test_list_memories_for_workspace(session, service):
     """Should list all memories for a workspace."""
-    with patch("damascus.memory.semantic.SemanticMemory.store_embedding", new_callable=AsyncMock, return_value=None):
+    with patch(
+        "damascus.memory.semantic.SemanticMemory.store_embedding",
+        new_callable=AsyncMock,
+        return_value=None,
+    ):
         with patch("damascus.core.events.bus.EventBus.publish", new_callable=AsyncMock):
             await service.store(session, workspace_id="ws_001", content="Memory A")
             await service.store(session, workspace_id="ws_001", content="Memory B")
@@ -111,7 +123,11 @@ async def test_list_memories_for_workspace(session, service):
 @pytest.mark.asyncio
 async def test_delete_memory(session, service):
     """Deleting a memory should archive it and remove from search."""
-    with patch("damascus.memory.semantic.SemanticMemory.store_embedding", new_callable=AsyncMock, return_value=None):
+    with patch(
+        "damascus.memory.semantic.SemanticMemory.store_embedding",
+        new_callable=AsyncMock,
+        return_value=None,
+    ):
         with patch("damascus.core.events.bus.EventBus.publish", new_callable=AsyncMock):
             record = await service.store(session, workspace_id="ws_001", content="To be deleted")
 
@@ -126,7 +142,11 @@ async def test_delete_memory(session, service):
 @pytest.mark.asyncio
 async def test_memory_importance_range(session, service):
     """Importance must be between 0.0 and 1.0."""
-    with patch("damascus.memory.semantic.SemanticMemory.store_embedding", new_callable=AsyncMock, return_value=None):
+    with patch(
+        "damascus.memory.semantic.SemanticMemory.store_embedding",
+        new_callable=AsyncMock,
+        return_value=None,
+    ):
         with patch("damascus.core.events.bus.EventBus.publish", new_callable=AsyncMock):
             record = await service.store(
                 session,

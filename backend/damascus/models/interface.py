@@ -18,6 +18,7 @@ from typing import Any
 @dataclass
 class ModelRequest:
     """A generation request sent to a model provider."""
+
     prompt: str
     system_prompt: str = ""
     model: str = ""
@@ -30,6 +31,7 @@ class ModelRequest:
 @dataclass
 class ModelResponse:
     """A generation response from a model provider."""
+
     content: str
     model: str
     provider: str

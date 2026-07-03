@@ -36,6 +36,7 @@ from damascus.shared.database import Base
 # Enums (stored as strings in DB)
 # ---------------------------------------------------------------------------
 
+
 class WorkspaceStatus(str, Enum):
     ACTIVE = "ACTIVE"
     ARCHIVED = "ARCHIVED"
@@ -79,6 +80,7 @@ class NodeType(str, Enum):
 # Helper to generate Damascus-prefixed IDs
 # ---------------------------------------------------------------------------
 
+
 def _new_id(prefix: str) -> str:
     return f"{prefix}_{uuid.uuid4().hex[:12]}"
 
@@ -91,11 +93,13 @@ def _utcnow() -> datetime:
 # ORM Models
 # ---------------------------------------------------------------------------
 
+
 class Workspace(Base):
     """
     The top-level organizational boundary.
     Everything in Damascus belongs to a workspace.
     """
+
     __tablename__ = "workspaces"
 
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=lambda: _new_id("ws"))
@@ -105,33 +109,40 @@ class Workspace(Base):
     settings: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
     status: Mapped[str] = mapped_column(String(32), default=WorkspaceStatus.ACTIVE)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, onupdate=_utcnow
+    )
 
     # Relationships
-    projects: Mapped[list[Project]] = relationship("Project", back_populates="workspace", cascade="all, delete-orphan")
+    projects: Mapped[list[Project]] = relationship(
+        "Project", back_populates="workspace", cascade="all, delete-orphan"
+    )
     workflow_definitions: Mapped[list[WorkflowDefinition]] = relationship(
         "WorkflowDefinition", back_populates="workspace", cascade="all, delete-orphan"
     )
 
-    __table_args__ = (
-        UniqueConstraint("owner_id", "name", name="uq_workspace_owner_name"),
-    )
+    __table_args__ = (UniqueConstraint("owner_id", "name", name="uq_workspace_owner_name"),)
 
 
 class Project(Base):
     """
     A project groups related workflows within a workspace.
     """
+
     __tablename__ = "projects"
 
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=lambda: _new_id("proj"))
-    workspace_id: Mapped[str] = mapped_column(ForeignKey("workspaces.id", ondelete="CASCADE"), nullable=False)
+    workspace_id: Mapped[str] = mapped_column(
+        ForeignKey("workspaces.id", ondelete="CASCADE"), nullable=False
+    )
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(Text, default="")
     tags: Mapped[list[str]] = mapped_column(JSONB, default=list)
     status: Mapped[str] = mapped_column(String(32), default=ProjectStatus.ACTIVE)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, onupdate=_utcnow
+    )
 
     workspace: Mapped[Workspace] = relationship("Workspace", back_populates="projects")
 
@@ -141,10 +152,13 @@ class WorkflowDefinition(Base):
     Blueprint for workflow execution.
     Versioned — each update increments the version number.
     """
+
     __tablename__ = "workflow_definitions"
 
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=lambda: _new_id("wf"))
-    workspace_id: Mapped[str] = mapped_column(ForeignKey("workspaces.id", ondelete="CASCADE"), nullable=False)
+    workspace_id: Mapped[str] = mapped_column(
+        ForeignKey("workspaces.id", ondelete="CASCADE"), nullable=False
+    )
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(Text, default="")
     version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
@@ -155,26 +169,29 @@ class WorkflowDefinition(Base):
     created_by: Mapped[str] = mapped_column(String(64), nullable=False)
     status: Mapped[str] = mapped_column(String(32), default=WorkflowStatus.DRAFT)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, onupdate=_utcnow
+    )
 
     workspace: Mapped[Workspace] = relationship("Workspace", back_populates="workflow_definitions")
     executions: Mapped[list[WorkflowExecution]] = relationship(
         "WorkflowExecution", back_populates="workflow_definition", cascade="all, delete-orphan"
     )
 
-    __table_args__ = (
-        UniqueConstraint("workspace_id", "name", name="uq_workflow_workspace_name"),
-    )
+    __table_args__ = (UniqueConstraint("workspace_id", "name", name="uq_workflow_workspace_name"),)
 
 
 class WorkflowExecution(Base):
     """
     A running (or completed) instance of a WorkflowDefinition.
     """
+
     __tablename__ = "workflow_executions"
 
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=lambda: _new_id("exec"))
-    workflow_id: Mapped[str] = mapped_column(ForeignKey("workflow_definitions.id", ondelete="CASCADE"), nullable=False)
+    workflow_id: Mapped[str] = mapped_column(
+        ForeignKey("workflow_definitions.id", ondelete="CASCADE"), nullable=False
+    )
     workspace_id: Mapped[str] = mapped_column(String(32), nullable=False)
     inputs: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
     outputs: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)

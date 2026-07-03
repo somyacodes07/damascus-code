@@ -75,10 +75,16 @@ class FilesystemTool(Tool):
             return ToolResult(success=False, output="", error=f"Not a file: {path}")
         size = path.stat().st_size
         if size > _MAX_FILE_SIZE:
-            return ToolResult(success=False, output="", error=f"File too large ({size} bytes). Max {_MAX_FILE_SIZE}.")
+            return ToolResult(
+                success=False,
+                output="",
+                error=f"File too large ({size} bytes). Max {_MAX_FILE_SIZE}.",
+            )
         try:
             content = path.read_text(encoding="utf-8", errors="replace")
-            return ToolResult(success=True, output=content, metadata={"path": str(path), "size": size})
+            return ToolResult(
+                success=True, output=content, metadata={"path": str(path), "size": size}
+            )
         except Exception as exc:
             return ToolResult(success=False, output="", error=str(exc))
 
@@ -86,7 +92,11 @@ class FilesystemTool(Tool):
         try:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content, encoding="utf-8")
-            return ToolResult(success=True, output=f"Written {len(content)} chars to {path}", metadata={"path": str(path)})
+            return ToolResult(
+                success=True,
+                output=f"Written {len(content)} chars to {path}",
+                metadata={"path": str(path)},
+            )
         except Exception as exc:
             return ToolResult(success=False, output="", error=str(exc))
 
@@ -100,7 +110,11 @@ class FilesystemTool(Tool):
                 kind = "FILE" if entry.is_file() else "DIR "
                 size = entry.stat().st_size if entry.is_file() else ""
                 lines.append(f"{kind}  {entry.name}  {size}")
-            return ToolResult(success=True, output="\n".join(lines), metadata={"path": str(path), "count": len(lines)})
+            return ToolResult(
+                success=True,
+                output="\n".join(lines),
+                metadata={"path": str(path), "count": len(lines)},
+            )
         except Exception as exc:
             return ToolResult(success=False, output="", error=str(exc))
 
@@ -117,7 +131,10 @@ class FilesystemTool(Tool):
                         "description": "The filesystem operation to perform",
                     },
                     "path": {"type": "string", "description": "Absolute path to file or directory"},
-                    "content": {"type": "string", "description": "Content to write (for write_file only)"},
+                    "content": {
+                        "type": "string",
+                        "description": "Content to write (for write_file only)",
+                    },
                 },
                 "required": ["operation", "path"],
             },

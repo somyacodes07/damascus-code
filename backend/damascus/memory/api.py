@@ -75,9 +75,19 @@ async def search_memories(
             query=query,
             limit=per_page,
         )
-        return {"data": results, "pagination": {"total": len(results), "page": page, "per_page": per_page, "total_pages": 1}}
+        return {
+            "data": results,
+            "pagination": {
+                "total": len(results),
+                "page": page,
+                "per_page": per_page,
+                "total_pages": 1,
+            },
+        }
     else:
-        items, total = await memory_service.list_for_workspace(session, workspace_id, page, per_page)
+        items, total = await memory_service.list_for_workspace(
+            session, workspace_id, page, per_page
+        )
         data = [
             {
                 "id": m.id,
@@ -94,7 +104,12 @@ async def search_memories(
         ]
         return {
             "data": data,
-            "pagination": {"total": total, "page": page, "per_page": per_page, "total_pages": max(1, -(-total // per_page))},
+            "pagination": {
+                "total": total,
+                "page": page,
+                "per_page": per_page,
+                "total_pages": max(1, -(-total // per_page)),
+            },
         }
 
 

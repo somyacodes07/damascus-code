@@ -29,7 +29,9 @@ class Environment(str, Enum):
 
 
 class ServerSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_SERVER_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_SERVER_", env_file=".env", extra="ignore"
+    )
 
     host: str = "0.0.0.0"
     port: int = 8000
@@ -38,7 +40,9 @@ class ServerSettings(BaseSettings):
 
 
 class DatabaseSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_DATABASE_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_DATABASE_", env_file=".env", extra="ignore"
+    )
 
     url: str = "postgresql+asyncpg://damascus:damascus_dev@localhost:5432/damascus"
     pool_size: int = 20
@@ -55,7 +59,9 @@ class RedisSettings(BaseSettings):
 
 
 class QdrantSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_QDRANT_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_QDRANT_", env_file=".env", extra="ignore"
+    )
 
     url: str = "http://localhost:6333"
     collection_memories: str = "damascus_memories"
@@ -70,7 +76,9 @@ class NATSSettings(BaseSettings):
 
 
 class StorageSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_STORAGE_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_STORAGE_", env_file=".env", extra="ignore"
+    )
 
     endpoint: str = "localhost:9000"
     access_key: str = "damascus"
@@ -80,7 +88,9 @@ class StorageSettings(BaseSettings):
 
 
 class OllamaModelSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_MODELS_OLLAMA_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_MODELS_OLLAMA_", env_file=".env", extra="ignore"
+    )
 
     enabled: bool = True
     endpoint: str = "http://localhost:11434"
@@ -88,7 +98,9 @@ class OllamaModelSettings(BaseSettings):
 
 
 class OpenAIModelSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_MODELS_OPENAI_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_MODELS_OPENAI_", env_file=".env", extra="ignore"
+    )
 
     enabled: bool = False
     api_key: str = ""
@@ -96,7 +108,9 @@ class OpenAIModelSettings(BaseSettings):
 
 
 class AnthropicModelSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_MODELS_ANTHROPIC_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_MODELS_ANTHROPIC_", env_file=".env", extra="ignore"
+    )
 
     enabled: bool = False
     api_key: str = ""
@@ -104,7 +118,9 @@ class AnthropicModelSettings(BaseSettings):
 
 
 class GeminiModelSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_MODELS_GEMINI_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_MODELS_GEMINI_", env_file=".env", extra="ignore"
+    )
 
     enabled: bool = False
     api_key: str = ""
@@ -112,7 +128,9 @@ class GeminiModelSettings(BaseSettings):
 
 
 class OpenRouterModelSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_MODELS_OPENROUTER_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_MODELS_OPENROUTER_", env_file=".env", extra="ignore"
+    )
 
     enabled: bool = False
     api_key: str = ""
@@ -131,17 +149,21 @@ class ModelsSettings(BaseSettings):
     @property
     def has_any_provider(self) -> bool:
         """Returns True if at least one model provider is enabled."""
-        return any([
-            self.ollama.enabled,
-            self.openai.enabled and bool(self.openai.api_key),
-            self.anthropic.enabled and bool(self.anthropic.api_key),
-            self.gemini.enabled and bool(self.gemini.api_key),
-            self.openrouter.enabled and bool(self.openrouter.api_key),
-        ])
+        return any(
+            [
+                self.ollama.enabled,
+                self.openai.enabled and bool(self.openai.api_key),
+                self.anthropic.enabled and bool(self.anthropic.api_key),
+                self.gemini.enabled and bool(self.gemini.api_key),
+                self.openrouter.enabled and bool(self.openrouter.api_key),
+            ]
+        )
 
 
 class SecuritySettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_SECURITY_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_SECURITY_", env_file=".env", extra="ignore"
+    )
 
     secret_key: str = "change-this-to-a-random-secret-in-production"
     require_approval_for_tools: bool = True
@@ -150,7 +172,9 @@ class SecuritySettings(BaseSettings):
 
 
 class EvolutionSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_EVOLUTION_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_EVOLUTION_", env_file=".env", extra="ignore"
+    )
 
     enabled: bool = False
     auto_promote: bool = False
@@ -158,7 +182,9 @@ class EvolutionSettings(BaseSettings):
 
 
 class ObservabilitySettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_OBSERVABILITY_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_OBSERVABILITY_", env_file=".env", extra="ignore"
+    )
 
     tracing_enabled: bool = True
     metrics_enabled: bool = True
@@ -166,7 +192,9 @@ class ObservabilitySettings(BaseSettings):
 
 
 class FeatureFlags(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DAMASCUS_FEATURES_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_prefix="DAMASCUS_FEATURES_", env_file=".env", extra="ignore"
+    )
 
     # Phase 2+ features — disabled by default in V1
     dynamic_team_generation: bool = False
@@ -181,6 +209,7 @@ class Settings(BaseSettings):
     Root configuration object for Damascus.
     Access via the module-level `settings` singleton.
     """
+
     model_config = SettingsConfigDict(env_prefix="DAMASCUS_", env_file=".env", extra="ignore")
 
     env: Environment = Environment.DEVELOPMENT

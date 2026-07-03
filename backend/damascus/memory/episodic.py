@@ -89,8 +89,7 @@ class EpisodicMemory:
         total = await session.scalar(count_stmt) or 0
 
         stmt = (
-            base_stmt
-            .order_by(MemoryRecord.created_at.desc())
+            base_stmt.order_by(MemoryRecord.created_at.desc())
             .offset((page - 1) * per_page)
             .limit(per_page)
         )

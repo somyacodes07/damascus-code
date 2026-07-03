@@ -125,23 +125,29 @@ class MemoryService:
             if memory_id:
                 try:
                     record = await episodic_memory.get(session, memory_id)
-                    results.append({
-                        "memory_id": record.id,
-                        "score": hit["score"],
-                        "content": record.content,
-                        "summary": record.summary,
-                        "type": record.type,
-                        "source_type": record.source_type,
-                        "tags": record.tags,
-                        "importance": record.importance,
-                        "created_at": record.created_at.isoformat(),
-                    })
+                    results.append(
+                        {
+                            "memory_id": record.id,
+                            "score": hit["score"],
+                            "content": record.content,
+                            "summary": record.summary,
+                            "type": record.type,
+                            "source_type": record.source_type,
+                            "tags": record.tags,
+                            "importance": record.importance,
+                            "created_at": record.created_at.isoformat(),
+                        }
+                    )
                 except MemoryNotFoundError:
                     pass
 
         await event_bus.publish(
             EventSubject.MEMORY_RETRIEVED,
-            {"workspace_id": workspace_id, "query_length": len(query), "results_count": len(results)},
+            {
+                "workspace_id": workspace_id,
+                "query_length": len(query),
+                "results_count": len(results),
+            },
             workspace_id=workspace_id,
         )
 

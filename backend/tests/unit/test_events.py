@@ -75,6 +75,7 @@ def test_event_has_unique_ids():
 def test_event_serializes_to_json_bytes():
     """Event should serialize cleanly to JSON bytes."""
     import json
+
     evt = DamascusEvent(
         subject=EventSubject.MEMORY_STORED.value,
         payload={"memory_id": "mem_abc"},

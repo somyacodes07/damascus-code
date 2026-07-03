@@ -119,7 +119,9 @@ class Scheduler:
                 try:
                     jobs.append(ScheduledJob.from_dict(json.loads(raw)))
                 except Exception as exc:
-                    log.warning("Failed to deserialize scheduled job", job_id=job_id, error=str(exc))
+                    log.warning(
+                        "Failed to deserialize scheduled job", job_id=job_id, error=str(exc)
+                    )
         return jobs
 
     async def start(self) -> None:

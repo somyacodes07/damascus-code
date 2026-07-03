@@ -43,28 +43,20 @@ class GeminiProvider(ModelProvider):
         system_instruction = None
 
         if request.system_prompt:
-            system_instruction = {
-                "parts": [{"text": request.system_prompt}]
-            }
+            system_instruction = {"parts": [{"text": request.system_prompt}]}
 
         for msg in request.messages:
             role = "user" if msg.get("role") in ("user", "system") else "model"
-            contents.append({
-                "role": role,
-                "parts": [{"text": msg.get("content", "")}]
-            })
+            contents.append({"role": role, "parts": [{"text": msg.get("content", "")}]})
 
         if request.prompt:
-            contents.append({
-                "role": "user",
-                "parts": [{"text": request.prompt}]
-            })
+            contents.append({"role": "user", "parts": [{"text": request.prompt}]})
 
         payload = {
             "contents": contents,
             "generationConfig": {
                 "temperature": request.temperature,
-            }
+            },
         }
         if request.max_tokens:
             payload["generationConfig"]["maxOutputTokens"] = request.max_tokens

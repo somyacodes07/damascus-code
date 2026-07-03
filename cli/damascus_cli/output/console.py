@@ -28,6 +28,7 @@ error_console = Console(stderr=True, style="bold red")
 # Status messages
 # ---------------------------------------------------------------------------
 
+
 def success(message: str) -> None:
     """Print a success message with a green checkmark."""
     console.print(f"[green]✓[/green]  {message}")
@@ -58,6 +59,7 @@ def heading(title: str) -> None:
 # Data output
 # ---------------------------------------------------------------------------
 
+
 def print_table(
     rows: list[dict[str, Any]],
     columns: list[str],
@@ -77,6 +79,7 @@ def print_table(
 def print_json(data: Any) -> None:
     """Print data as pretty-printed JSON."""
     import json
+
     json_str = json.dumps(data, indent=2, default=str)
     console.print(Syntax(json_str, "json", theme="monokai", word_wrap=True))
 
@@ -99,6 +102,7 @@ def print_key_value(data: dict[str, Any], title: str = "") -> None:
 # ---------------------------------------------------------------------------
 # Pagination helper
 # ---------------------------------------------------------------------------
+
 
 def print_pagination(pagination: dict[str, Any]) -> None:
     """Print pagination info."""

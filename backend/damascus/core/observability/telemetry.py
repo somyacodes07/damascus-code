@@ -60,6 +60,7 @@ model_tokens_used_total = Counter(
 # Structured logging setup
 # ---------------------------------------------------------------------------
 
+
 def configure_logging(log_level: str = "info") -> None:
     """
     Configure structlog for structured JSON logging in production,

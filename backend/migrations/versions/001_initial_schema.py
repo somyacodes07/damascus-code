@@ -55,7 +55,12 @@ def upgrade() -> None:
     op.create_table(
         "projects",
         sa.Column("id", sa.String(32), primary_key=True),
-        sa.Column("workspace_id", sa.String(32), sa.ForeignKey("workspaces.id", ondelete="CASCADE"), nullable=False),
+        sa.Column(
+            "workspace_id",
+            sa.String(32),
+            sa.ForeignKey("workspaces.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
         sa.Column("name", sa.String(255), nullable=False),
         sa.Column("description", sa.Text, default=""),
         sa.Column("tags", postgresql.JSONB, default=[]),
@@ -71,7 +76,12 @@ def upgrade() -> None:
     op.create_table(
         "workflow_definitions",
         sa.Column("id", sa.String(32), primary_key=True),
-        sa.Column("workspace_id", sa.String(32), sa.ForeignKey("workspaces.id", ondelete="CASCADE"), nullable=False),
+        sa.Column(
+            "workspace_id",
+            sa.String(32),
+            sa.ForeignKey("workspaces.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
         sa.Column("name", sa.String(255), nullable=False),
         sa.Column("description", sa.Text, default=""),
         sa.Column("version", sa.Integer, default=1),
@@ -84,7 +94,9 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
     )
-    op.create_index("ix_workflow_definitions_workspace_id", "workflow_definitions", ["workspace_id"])
+    op.create_index(
+        "ix_workflow_definitions_workspace_id", "workflow_definitions", ["workspace_id"]
+    )
     op.create_index("ix_workflow_definitions_status", "workflow_definitions", ["status"])
 
     # ----------------------------------------------------------------
@@ -93,7 +105,12 @@ def upgrade() -> None:
     op.create_table(
         "workflow_executions",
         sa.Column("id", sa.String(32), primary_key=True),
-        sa.Column("workflow_id", sa.String(32), sa.ForeignKey("workflow_definitions.id", ondelete="SET NULL"), nullable=True),
+        sa.Column(
+            "workflow_id",
+            sa.String(32),
+            sa.ForeignKey("workflow_definitions.id", ondelete="SET NULL"),
+            nullable=True,
+        ),
         sa.Column("workspace_id", sa.String(32), nullable=False),
         sa.Column("inputs", postgresql.JSONB, default={}),
         sa.Column("outputs", postgresql.JSONB, default={}),
@@ -137,7 +154,12 @@ def upgrade() -> None:
     op.create_table(
         "agent_performance",
         sa.Column("id", sa.String(32), primary_key=True),
-        sa.Column("agent_profile_id", sa.String(32), sa.ForeignKey("agent_profiles.id", ondelete="CASCADE"), nullable=False),
+        sa.Column(
+            "agent_profile_id",
+            sa.String(32),
+            sa.ForeignKey("agent_profiles.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
         sa.Column("execution_id", sa.String(32), nullable=False),
         sa.Column("task_type", sa.String(128), default=""),
         sa.Column("success", sa.Boolean, default=True),
@@ -146,7 +168,9 @@ def upgrade() -> None:
         sa.Column("token_usage", sa.Integer, default=0),
         sa.Column("recorded_at", sa.DateTime(timezone=True), nullable=False),
     )
-    op.create_index("ix_agent_performance_agent_profile_id", "agent_performance", ["agent_profile_id"])
+    op.create_index(
+        "ix_agent_performance_agent_profile_id", "agent_performance", ["agent_profile_id"]
+    )
 
     # ----------------------------------------------------------------
     # memory_records
@@ -180,8 +204,18 @@ def upgrade() -> None:
     op.create_table(
         "memory_links",
         sa.Column("id", sa.String(32), primary_key=True),
-        sa.Column("source_memory_id", sa.String(32), sa.ForeignKey("memory_records.id", ondelete="CASCADE"), nullable=False),
-        sa.Column("target_memory_id", sa.String(32), sa.ForeignKey("memory_records.id", ondelete="CASCADE"), nullable=False),
+        sa.Column(
+            "source_memory_id",
+            sa.String(32),
+            sa.ForeignKey("memory_records.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
+        sa.Column(
+            "target_memory_id",
+            sa.String(32),
+            sa.ForeignKey("memory_records.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
         sa.Column("relationship", sa.String(64), nullable=False),
         sa.Column("strength", sa.Float, default=1.0),
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),

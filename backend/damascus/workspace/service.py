@@ -93,10 +93,15 @@ class WorkspaceService:
             Workspace.status == WorkspaceStatus.ACTIVE,
         )
         from sqlalchemy import func
+
         count_stmt = select(func.count()).select_from(base_stmt.subquery())
         total = await session.scalar(count_stmt) or 0
 
-        stmt = base_stmt.order_by(Workspace.created_at.desc()).offset((page - 1) * per_page).limit(per_page)
+        stmt = (
+            base_stmt.order_by(Workspace.created_at.desc())
+            .offset((page - 1) * per_page)
+            .limit(per_page)
+        )
         result = await session.scalars(stmt)
         return list(result.all()), total
 
@@ -188,10 +193,15 @@ class WorkspaceService:
             WorkflowDefinition.workspace_id == workspace_id,
         )
         from sqlalchemy import func
+
         count_stmt = select(func.count()).select_from(base_stmt.subquery())
         total = await session.scalar(count_stmt) or 0
 
-        stmt = base_stmt.order_by(WorkflowDefinition.created_at.desc()).offset((page - 1) * per_page).limit(per_page)
+        stmt = (
+            base_stmt.order_by(WorkflowDefinition.created_at.desc())
+            .offset((page - 1) * per_page)
+            .limit(per_page)
+        )
         result = await session.scalars(stmt)
         return list(result.all()), total
 

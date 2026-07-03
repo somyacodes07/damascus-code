@@ -36,6 +36,7 @@ class ExecutionState:
     Snapshot of a workflow execution's current state.
     Returned by get_execution_state() and used for checkpointing.
     """
+
     execution_id: str
     workflow_id: str
     workspace_id: str
@@ -54,6 +55,7 @@ class ExecutionTrace:
     Full execution trace for observability and evolution analysis.
     Generated on completion or failure.
     """
+
     execution_id: str
     workflow_id: str
     workspace_id: str

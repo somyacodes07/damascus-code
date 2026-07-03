@@ -13,6 +13,7 @@ class ModelRegistry:
     async def get_available_providers(self) -> list[str]:
         """Return a list of enabled provider names."""
         from damascus.config import settings
+
         providers = []
         if settings.models.ollama.enabled:
             providers.append("ollama")

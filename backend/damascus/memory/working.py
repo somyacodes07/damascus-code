@@ -45,7 +45,9 @@ class WorkingMemory:
         redis_key = f"damascus:working:{workspace_id}:{execution_id}:{key}"
         serialized = json.dumps(value) if not isinstance(value, str) else value
         await redis.set(redis_key, serialized, ex=ttl)
-        log.debug("Set working memory", workspace_id=workspace_id, execution_id=execution_id, key=key)
+        log.debug(
+            "Set working memory", workspace_id=workspace_id, execution_id=execution_id, key=key
+        )
 
     async def get(
         self,

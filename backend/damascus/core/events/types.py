@@ -70,6 +70,7 @@ class DamascusEvent:
     Base event record.
     All events are immutable after creation.
     """
+
     subject: str
     payload: dict[str, Any]
     workspace_id: str
@@ -79,15 +80,19 @@ class DamascusEvent:
     def __post_init__(self) -> None:
         if not self.event_id:
             import uuid
+
             self.event_id = f"evt_{uuid.uuid4().hex[:12]}"
 
     def to_json_bytes(self) -> bytes:
         """Serialize to JSON bytes for NATS publish."""
         import json
-        return json.dumps({
-            "event_id": self.event_id,
-            "subject": self.subject,
-            "workspace_id": self.workspace_id,
-            "occurred_at": self.occurred_at.isoformat(),
-            "payload": self.payload,
-        }).encode()
+
+        return json.dumps(
+            {
+                "event_id": self.event_id,
+                "subject": self.subject,
+                "workspace_id": self.workspace_id,
+                "occurred_at": self.occurred_at.isoformat(),
+                "payload": self.payload,
+            }
+        ).encode()

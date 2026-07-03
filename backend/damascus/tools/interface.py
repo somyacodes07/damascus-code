@@ -24,6 +24,7 @@ class RiskLevel(str, Enum):
 @dataclass
 class ToolResult:
     """The result of a tool execution."""
+
     success: bool
     output: str
     error: str | None = None

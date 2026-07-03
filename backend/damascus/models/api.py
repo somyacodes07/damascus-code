@@ -68,4 +68,6 @@ async def generate(body: GenerateRequest) -> dict[str, Any]:
             }
         }
     except DamascusError as exc:
-        raise HTTPException(status_code=503, detail={"error": {"code": exc.code, "message": exc.message}}) from exc
+        raise HTTPException(
+            status_code=503, detail={"error": {"code": exc.code, "message": exc.message}}
+        ) from exc

@@ -22,6 +22,7 @@ console = Console()
 @app.command("list")
 def list_workflows(workspace_id: str = typer.Argument(..., help="Workspace ID")):
     """List workflows in a workspace."""
+
     async def _run():
         async with DamascusClient() as client:
             result = await client.list_workflows(workspace_id)
@@ -37,6 +38,7 @@ def list_workflows(workspace_id: str = typer.Argument(..., help="Workspace ID"))
         for wf in items:
             table.add_row(wf["id"], wf["name"], wf["status"], str(wf.get("version", 1)))
         console.print(table)
+
     run_async(_run())
 
 
@@ -60,4 +62,5 @@ def run_workflow(
         data = result.get("data", {})
         console.print(f"[green]✓[/green] Started execution [bold]{data.get('execution_id')}[/bold]")
         console.print(f"  Status: {data.get('status')}")
+
     run_async(_run())

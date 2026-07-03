@@ -36,6 +36,7 @@ class AgentProfile(Base):
     An agent profile defines a specialized agent's capabilities and behavior.
     Agents are execution primitives inside workflows — not standalone entities.
     """
+
     __tablename__ = "agent_profiles"
 
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_new_agent_id)
@@ -50,7 +51,9 @@ class AgentProfile(Base):
     temperature: Mapped[float] = mapped_column(Float, default=0.7)
     status: Mapped[str] = mapped_column(String(32), default=AgentStatus.ACTIVE)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, onupdate=_utcnow
+    )
 
     performance_records: Mapped[list[AgentPerformance]] = relationship(
         "AgentPerformance", back_populates="agent", cascade="all, delete-orphan"
@@ -59,10 +62,15 @@ class AgentProfile(Base):
 
 class AgentPerformance(Base):
     """Tracks agent performance metrics over time for evolution analysis."""
+
     __tablename__ = "agent_performance"
 
-    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=lambda: f"perf_{uuid.uuid4().hex[:12]}")
-    agent_profile_id: Mapped[str] = mapped_column(ForeignKey("agent_profiles.id", ondelete="CASCADE"), nullable=False)
+    id: Mapped[str] = mapped_column(
+        String(32), primary_key=True, default=lambda: f"perf_{uuid.uuid4().hex[:12]}"
+    )
+    agent_profile_id: Mapped[str] = mapped_column(
+        ForeignKey("agent_profiles.id", ondelete="CASCADE"), nullable=False
+    )
     execution_id: Mapped[str] = mapped_column(String(32), nullable=False)
     task_type: Mapped[str] = mapped_column(String(128), default="")
     success: Mapped[bool] = mapped_column(default=True)

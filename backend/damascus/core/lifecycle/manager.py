@@ -116,5 +116,6 @@ def get_lifecycle_manager() -> LifecycleManager:
     global _lifecycle_manager
     if _lifecycle_manager is None:
         from damascus.core.runtime.langgraph.adapter import LangGraphAdapter
+
         _lifecycle_manager = LifecycleManager(runtime=LangGraphAdapter())
     return _lifecycle_manager

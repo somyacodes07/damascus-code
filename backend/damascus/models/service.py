@@ -40,7 +40,11 @@ class ModelService:
     async def generate(self, request: ModelRequest) -> ModelResponse:
         """Generate text using the router to select the best provider."""
         provider, routed_request = await self._router.select_provider(request)
-        log.info("Generating text", provider=provider.provider_name, model=routed_request.model or "default")
+        log.info(
+            "Generating text",
+            provider=provider.provider_name,
+            model=routed_request.model or "default",
+        )
         return await provider.generate(routed_request)
 
     async def list_available_models(self) -> dict[str, list[str]]:
@@ -65,4 +69,3 @@ class ModelService:
 
 # Module-level singleton
 model_service = ModelService()
-

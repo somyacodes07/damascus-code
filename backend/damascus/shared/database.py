@@ -39,6 +39,7 @@ class Base(DeclarativeBase):
     Base class for all SQLAlchemy ORM models.
     Import and extend this in every subsystem's models.py.
     """
+
     metadata = MetaData(naming_convention=NAMING_CONVENTION)
 
 

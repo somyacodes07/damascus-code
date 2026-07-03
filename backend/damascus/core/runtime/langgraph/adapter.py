@@ -41,11 +41,13 @@ log = structlog.get_logger(__name__)
 # Shared graph state definition
 # ---------------------------------------------------------------------------
 
+
 class WorkflowState(TypedDict):
     """
     The shared state that flows through a LangGraph workflow.
     Every node reads from and writes back to this state.
     """
+
     execution_id: str
     workspace_id: str
     inputs: dict[str, Any]
@@ -58,6 +60,7 @@ class WorkflowState(TypedDict):
 # ---------------------------------------------------------------------------
 # Adapter implementation
 # ---------------------------------------------------------------------------
+
 
 class LangGraphAdapter(IRuntime):
     """
@@ -98,6 +101,7 @@ class LangGraphAdapter(IRuntime):
                     # Actual agent/tool invocation happens in the Agent/Tool layers.
                     # This is a pass-through in Phase 1 scaffold.
                     return state
+
                 return node_fn
 
             graph.add_node(node_id, asyncio.coroutine(make_node_fn()))
@@ -127,7 +131,9 @@ class LangGraphAdapter(IRuntime):
         workspace_id: str,
     ) -> ExecutionState:
         """Start executing a workflow and return initial state."""
-        log.info("Starting workflow execution", execution_id=execution_id, workspace_id=workspace_id)
+        log.info(
+            "Starting workflow execution", execution_id=execution_id, workspace_id=workspace_id
+        )
 
         graph = self._build_graph(workflow_definition)
         compiled = graph.compile(checkpointer=self._checkpointer)

@@ -62,6 +62,7 @@ class AgentService:
         per_page: int = 20,
     ) -> tuple[list[AgentProfile], int]:
         from sqlalchemy import func
+
         base = select(AgentProfile).where(
             AgentProfile.workspace_id == workspace_id,
             AgentProfile.status == AgentStatus.ACTIVE,

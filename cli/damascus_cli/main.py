@@ -41,6 +41,7 @@ app.add_typer(config.app, name="config", help="Configuration and health checks")
 def launch_tui():
     """Launch the interactive Terminal User Interface (TUI)."""
     from damascus_cli.tui.app import DamascusApp
+
     app_instance = DamascusApp()
     app_instance.run()
 
@@ -49,6 +50,7 @@ def launch_tui():
 def version():
     """Show Damascus version."""
     from rich.console import Console
+
     Console().print("[bold cyan]Damascus CLI v0.1.0[/bold cyan]")
 
 

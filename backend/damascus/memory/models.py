@@ -71,6 +71,7 @@ class MemoryRecord(Base):
     A single piece of stored memory.
     Source of truth is PostgreSQL; vectors live in Qdrant.
     """
+
     __tablename__ = "memory_records"
 
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=_new_mem_id)
@@ -86,13 +87,17 @@ class MemoryRecord(Base):
     embedding_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     status: Mapped[str] = mapped_column(String(32), default=MemoryStatus.ACTIVE)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, onupdate=_utcnow
+    )
     accessed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
     access_count: Mapped[int] = mapped_column(Integer, default=0)
 
     # Links to other memories (knowledge graph edges)
     outgoing_links: Mapped[list[MemoryLink]] = orm_relationship(
-        "MemoryLink", foreign_keys="MemoryLink.source_memory_id", back_populates="source_memory",
+        "MemoryLink",
+        foreign_keys="MemoryLink.source_memory_id",
+        back_populates="source_memory",
         cascade="all, delete-orphan",
     )
 
@@ -103,10 +108,15 @@ class MemoryLink(Base):
     Used to build the knowledge graph (Phase 3 full graph via Apache AGE).
     In Phase 1, stored directly in PostgreSQL.
     """
+
     __tablename__ = "memory_links"
 
-    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=lambda: f"link_{uuid.uuid4().hex[:12]}")
-    source_memory_id: Mapped[str] = mapped_column(ForeignKey("memory_records.id", ondelete="CASCADE"), nullable=False)
+    id: Mapped[str] = mapped_column(
+        String(32), primary_key=True, default=lambda: f"link_{uuid.uuid4().hex[:12]}"
+    )
+    source_memory_id: Mapped[str] = mapped_column(
+        ForeignKey("memory_records.id", ondelete="CASCADE"), nullable=False
+    )
     target_memory_id: Mapped[str] = mapped_column(String(32), nullable=False)
     relationship: Mapped[str] = mapped_column(String(32), nullable=False)
     strength: Mapped[float] = mapped_column(Float, default=1.0)

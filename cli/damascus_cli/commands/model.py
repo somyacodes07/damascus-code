@@ -18,6 +18,7 @@ console = Console()
 @app.command("list")
 def list_models():
     """List all available models grouped by provider."""
+
     async def _run():
         async with DamascusClient() as client:
             result = await client.list_models()
@@ -32,12 +33,14 @@ def list_models():
                     console.print(f"  • {model}")
             else:
                 console.print("  [dim](no models loaded)[/dim]")
+
     run_async(_run())
 
 
 @app.command("health")
 def provider_health():
     """Check which model providers are reachable."""
+
     async def _run():
         async with DamascusClient() as client:
             resp = await client._client.get("/api/v1/models/health")
@@ -48,6 +51,7 @@ def provider_health():
                 console.print(f"  [green]✓[/green]  {provider}")
             else:
                 console.print(f"  [red]✗[/red]  {provider} [dim](unavailable)[/dim]")
+
     run_async(_run())
 
 
@@ -59,6 +63,7 @@ def generate(
     temperature: float = typer.Option(0.7, "--temperature", "-t"),
 ):
     """Send a prompt to the default model provider and print the response."""
+
     async def _run():
         async with DamascusClient() as client:
             resp = await client._client.post(
@@ -77,4 +82,5 @@ def generate(
         console.print(data["content"])
         usage = data.get("usage", {})
         console.print(f"\n[dim]Tokens: {usage.get('total_tokens', 0)} total[/dim]")
+
     run_async(_run())

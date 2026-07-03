@@ -38,6 +38,7 @@ class WorkflowRegistry:
     ) -> dict[str, Any]:
         """Register a new workflow definition."""
         import uuid
+
         workflow_id = f"wf_{uuid.uuid4().hex[:12]}"
         log.info("Registering workflow", workflow_id=workflow_id, name=name)
 

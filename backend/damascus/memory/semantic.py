@@ -38,6 +38,7 @@ async def _get_embedding(text: str) -> list[float] | None:
 
     try:
         import httpx
+
         async with httpx.AsyncClient(timeout=30.0) as client:
             resp = await client.post(
                 f"{settings.models.ollama.endpoint}/api/embeddings",
@@ -77,6 +78,7 @@ class SemanticMemory:
         point_id = str(uuid.uuid4())
 
         from qdrant_client.models import PointStruct
+
         await client.upsert(
             collection_name=settings.qdrant.collection_memories,
             points=[
