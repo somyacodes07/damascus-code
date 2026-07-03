@@ -10,7 +10,7 @@ packages = [{ include = "damascus_cli" }]
 python = "^3.12"
 
 # CLI framework — Typer wraps Click with type hints
-typer = { extras = ["all"], version = "^0.12.0" }
+typer = { extras = ["all"], version = "^0.15.1" }
 
 # TUI framework — Textual for interactive terminal dashboards
 textual = "^0.74.0"
