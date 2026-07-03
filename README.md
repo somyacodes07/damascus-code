@@ -2,6 +2,12 @@
 
 An intelligence operating system that executes, learns, and evolves.
 
+**[📚 Read the Official Documentation](https://somyacodes07.github.io/damascus-docs/)** *(Update this link to your actual live docs site if different)*
+
+## About
+
+Damascus is a comprehensive intelligence operating system designed to execute complex workflows, learn from past executions, and evolve its capabilities. It features a robust backend infrastructure (FastAPI, PostgreSQL, Redis, Qdrant), a three-tier memory layer (working, episodic, semantic), and Ollama-backed single-agent execution with terminal and filesystem access. Everything can be managed seamlessly through its dedicated CLI and interactive dashboard.
+
 ## Phase 1 (V1) — Foundation
 
 This is the Phase 1 implementation of Damascus, providing:
