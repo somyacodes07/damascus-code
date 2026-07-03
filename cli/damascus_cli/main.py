@@ -8,6 +8,9 @@ Usage:
   damascus workspace list
   damascus workflow run <id>
   damascus memory search <workspace_id> <query>
+  damascus agent list <workspace_id>
+  damascus model list
+  damascus model generate "prompt"
   damascus config health
   damascus tui
 """
@@ -16,7 +19,7 @@ from __future__ import annotations
 
 import typer
 
-from damascus_cli.commands import workspace, workflow, memory, config
+from damascus_cli.commands import workspace, workflow, memory, config, agent, model
 
 app = typer.Typer(
     name="damascus",
@@ -29,6 +32,8 @@ app = typer.Typer(
 app.add_typer(workspace.app, name="workspace", help="Manage workspaces")
 app.add_typer(workflow.app, name="workflow", help="Manage and run workflows")
 app.add_typer(memory.app, name="memory", help="Browse and search memories")
+app.add_typer(agent.app, name="agent", help="Manage agent profiles")
+app.add_typer(model.app, name="model", help="Manage and use AI model providers")
 app.add_typer(config.app, name="config", help="Configuration and health checks")
 
 
