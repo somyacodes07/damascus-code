@@ -24,7 +24,7 @@ from enum import Enum
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship as orm_relationship
 
 from damascus.shared.database import Base
 
@@ -90,7 +90,7 @@ class MemoryRecord(Base):
     access_count: Mapped[int] = mapped_column(Integer, default=0)
 
     # Links to other memories (knowledge graph edges)
-    outgoing_links: Mapped[list["MemoryLink"]] = relationship(
+    outgoing_links: Mapped[list["MemoryLink"]] = orm_relationship(
         "MemoryLink", foreign_keys="MemoryLink.source_memory_id", back_populates="source_memory",
         cascade="all, delete-orphan",
     )
@@ -111,6 +111,6 @@ class MemoryLink(Base):
     strength: Mapped[float] = mapped_column(Float, default=1.0)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
-    source_memory: Mapped["MemoryRecord"] = relationship(
-        "MemoryRecord", foreign_keys=[source_memory_id], back_populates="outgoing_links"
+    source_memory: Mapped["MemoryRecord"] = orm_relationship(
+        "MemoryRecord", foreign_keys="MemoryLink.source_memory_id", back_populates="outgoing_links"
     )

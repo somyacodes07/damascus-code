@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -221,11 +221,11 @@ async def update_workspace(
         raise _handle_error(exc) from exc
 
 
-@router.delete("/workspaces/{workspace_id}", status_code=204)
+@router.delete("/workspaces/{workspace_id}", status_code=204, response_class=Response)
 async def delete_workspace(
     workspace_id: str,
     session: AsyncSession = Depends(get_session),
-) -> None:
+) -> Response:
     """DELETE /api/v1/workspaces/{workspace_id}"""
     try:
         await workspace_service.delete_workspace(session, workspace_id)
