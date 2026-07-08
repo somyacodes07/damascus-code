@@ -166,7 +166,7 @@ class BenchmarkArtifact(Base):
     artifact_type: Mapped[str] = mapped_column(String(64), nullable=False)
     storage_reference: Mapped[str] = mapped_column(String(512), nullable=False)
     size_bytes: Mapped[int] = mapped_column(Integer, default=0)
-    metadata: Mapped[dict] = mapped_column(JSONB, default=dict)
+    artifact_metadata: Mapped[dict] = mapped_column(JSONB, default=dict)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
     run: Mapped[BenchmarkRun] = relationship("BenchmarkRun", back_populates="artifacts")
