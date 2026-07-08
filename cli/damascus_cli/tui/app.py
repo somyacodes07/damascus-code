@@ -58,8 +58,8 @@ class _DashboardPanel(Static):
 
     BANNER = """
 ╔═══════════════════════════════════════════════╗
-║         Damascus V1 — Intelligence OS          ║
-║                Phase 1 Foundation              ║
+║         Damascus V2 — Intelligence OS          ║
+║                Phase 2 Intelligence            ║
 ╚═══════════════════════════════════════════════╝
 """
 
@@ -141,7 +141,7 @@ class DamascusApp(App):
     """
 
     TITLE = "Damascus — Intelligence OS"
-    SUB_TITLE = "Phase 1 Foundation"
+    SUB_TITLE = "Phase 2 Intelligence"
 
     BINDINGS = [
         Binding("q", "quit", "Quit", priority=True),
