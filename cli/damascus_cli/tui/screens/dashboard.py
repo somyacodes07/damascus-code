@@ -14,9 +14,9 @@ from textual.widgets import Footer, Header, Markdown, Static
 
 
 WELCOME_MARKDOWN = """
-# Damascus V1
+# Damascus V2
 
-**Intelligence Operating System — Phase 1 Foundation**
+**Intelligence Operating System — Phase 2 Intelligence**
 
 ---
 
