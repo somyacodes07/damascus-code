@@ -184,3 +184,118 @@ class WorkflowAlreadyRunningError(ExecutionError):
 class WorkflowNotRunningError(ExecutionError):
     code = "WORKFLOW_NOT_RUNNING"
     message = "The workflow is not currently running."
+
+
+# ---------------------------------------------------------------------------
+# Team Errors (Phase 2 — Milestone 2.1)
+# ---------------------------------------------------------------------------
+
+
+class TeamNotFoundError(NotFoundError):
+    code = "TEAM_NOT_FOUND"
+    message = "The team was not found."
+
+
+# ---------------------------------------------------------------------------
+# Agent Communication Errors (Phase 2 — Milestone 2.1)
+# ---------------------------------------------------------------------------
+
+
+class MessageBudgetExceededError(DamascusError):
+    code = "MESSAGE_BUDGET_EXCEEDED"
+    message = "The inter-agent message budget has been exhausted."
+
+
+class MessageTooLargeError(DamascusError):
+    code = "MESSAGE_TOO_LARGE"
+    message = "The agent message payload exceeds the maximum allowed size."
+
+
+# ---------------------------------------------------------------------------
+# Model Routing Errors (Phase 2 — Milestone 2.2)
+# ---------------------------------------------------------------------------
+
+
+class RoutingError(DamascusError):
+    code = "ROUTING_ERROR"
+    message = "Model routing failed."
+
+
+class NoEligibleModelError(RoutingError):
+    code = "NO_ELIGIBLE_MODEL"
+    message = "No model satisfies the requested capability and policy constraints."
+
+
+# ---------------------------------------------------------------------------
+# MCP Errors (Phase 2 — Milestone 2.3)
+# ---------------------------------------------------------------------------
+
+
+class MCPError(DamascusError):
+    code = "MCP_ERROR"
+    message = "An MCP protocol error occurred."
+
+
+class MCPServerError(MCPError):
+    code = "MCP_SERVER_ERROR"
+    message = "The MCP server is unavailable or returned an error."
+
+
+class MCPToolNotFoundError(MCPError):
+    code = "MCP_TOOL_NOT_FOUND"
+    message = "The requested MCP tool was not found."
+
+
+# ---------------------------------------------------------------------------
+# Benchmark Errors (Phase 2 — Milestone 2.4)
+# ---------------------------------------------------------------------------
+
+
+class BenchmarkNotFoundError(NotFoundError):
+    code = "BENCHMARK_NOT_FOUND"
+    message = "The benchmark was not found."
+
+
+class BenchmarkRunFailedError(ExecutionError):
+    code = "BENCHMARK_RUN_FAILED"
+    message = "The benchmark run failed during execution."
+
+
+# ---------------------------------------------------------------------------
+# Evolution Errors (Phase 2 — Milestone 2.5)
+# ---------------------------------------------------------------------------
+
+
+class ExperimentNotFoundError(NotFoundError):
+    code = "EXPERIMENT_NOT_FOUND"
+    message = "The experiment was not found."
+
+
+class ExperimentAlreadyRunningError(ConflictError):
+    code = "EXPERIMENT_ALREADY_RUNNING"
+    message = "An experiment is already running for this target."
+
+
+class PromotionNotFoundError(NotFoundError):
+    code = "PROMOTION_NOT_FOUND"
+    message = "The promotion record was not found."
+
+
+class RollbackFailedError(ExecutionError):
+    code = "ROLLBACK_FAILED"
+    message = "The rollback operation failed."
+
+
+class SafetyConstraintViolationError(DamascusError):
+    code = "SAFETY_CONSTRAINT_VIOLATION"
+    message = "The variant violates an immutable safety constraint."
+
+
+# ---------------------------------------------------------------------------
+# Research Errors (Phase 2 — Milestone 2.6)
+# ---------------------------------------------------------------------------
+
+
+class ResearchTaskNotFoundError(NotFoundError):
+    code = "RESEARCH_TASK_NOT_FOUND"
+    message = "The research task was not found."
