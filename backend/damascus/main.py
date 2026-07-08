@@ -162,8 +162,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Damascus",
-    description="Intelligence Operating System — Phase 1 API",
-    version="0.1.0",
+    description="Intelligence Operating System — Phase 2 API",
+    version="0.2.0",
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
@@ -189,16 +189,25 @@ app.mount("/metrics", metrics_app)
 # ---------------------------------------------------------------------------
 
 from damascus.agents.api import router as agents_router
+from damascus.benchmarks.api import router as benchmarks_router
+from damascus.evolution.api import router as evolution_router
 from damascus.memory.api import router as memory_router
 from damascus.models.api import router as models_router
+from damascus.research.api import router as research_router
 from damascus.tools.api import router as tools_router
 from damascus.workspace.api import router as workspace_router
 
+# Phase 1 routers
 app.include_router(workspace_router)
 app.include_router(memory_router)
 app.include_router(agents_router)
 app.include_router(models_router)
 app.include_router(tools_router)
+
+# Phase 2 routers
+app.include_router(benchmarks_router)
+app.include_router(evolution_router)
+app.include_router(research_router)
 
 # ---------------------------------------------------------------------------
 # Health check endpoint
@@ -218,7 +227,7 @@ async def health() -> dict[str, Any]:
     """
     checks: dict[str, Any] = {
         "status": "healthy",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "environment": settings.env,
         "uptime_seconds": round(time.time() - _start_time, 1),
         "services": {},
@@ -277,4 +286,4 @@ async def health() -> dict[str, Any]:
 @app.get("/", tags=["root"])
 async def root() -> dict[str, str]:
     """Root endpoint — redirects to API docs."""
-    return {"message": "Damascus API v0.1. See /docs for API documentation."}
+    return {"message": "Damascus API v0.2. See /docs for API documentation."}
