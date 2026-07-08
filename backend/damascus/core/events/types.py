@@ -46,22 +46,49 @@ class EventSubject(str, Enum):
 
     # Agent events
     AGENT_ASSIGNED = "damascus.events.agent.assigned"
+    AGENT_INVOKED = "damascus.events.agent.invoked"
     AGENT_COMPLETED = "damascus.events.agent.completed"
+    AGENT_FAILED = "damascus.events.agent.failed"
+
+    # Team events (Phase 2 — Milestone 2.1)
+    TEAM_CREATED = "damascus.events.team.created"
+    TEAM_ASSEMBLED = "damascus.events.team.assembled"
+    TEAM_COMPLETED = "damascus.events.team.completed"
+    TEAM_FAILED = "damascus.events.team.failed"
 
     # Tool events
     TOOL_EXECUTED = "damascus.events.tool.executed"
     TOOL_FAILED = "damascus.events.tool.failed"
 
-    # Evolution events (Phase 2)
+    # MCP events (Phase 2 — Milestone 2.3)
+    MCP_SERVER_REGISTERED = "damascus.events.mcp.server_registered"
+    MCP_TOOL_DISCOVERED = "damascus.events.mcp.tool_discovered"
+    MCP_TOOL_EXECUTED = "damascus.events.mcp.tool_executed"
+
+    # Model routing events (Phase 2 — Milestone 2.2)
+    MODEL_ROUTED = "damascus.events.model.routed"
+    MODEL_FALLBACK = "damascus.events.model.fallback"
+    MODEL_PROVIDER_DEGRADED = "damascus.events.model.provider_degraded"
+
+    # Benchmark events (Phase 2 — Milestone 2.4)
+    BENCHMARK_STARTED = "damascus.events.benchmark.started"
+    BENCHMARK_COMPLETED = "damascus.events.benchmark.completed"
+    BENCHMARK_FAILED = "damascus.events.benchmark.failed"
+
+    # Evolution events (Phase 2 — Milestone 2.5)
+    EVOLUTION_OPPORTUNITY_FOUND = "damascus.events.evolution.opportunity_found"
     EVOLUTION_CANDIDATE_GENERATED = "damascus.events.evolution.candidate_generated"
     EVOLUTION_EXPERIMENT_STARTED = "damascus.events.evolution.experiment_started"
     EVOLUTION_EXPERIMENT_COMPLETED = "damascus.events.evolution.experiment_completed"
+    EVOLUTION_PROMOTION_PROPOSED = "damascus.events.evolution.promotion_proposed"
+    EVOLUTION_PROMOTION_APPROVED = "damascus.events.evolution.promotion_approved"
+    EVOLUTION_PROMOTION_REJECTED = "damascus.events.evolution.promotion_rejected"
+    EVOLUTION_ROLLBACK = "damascus.events.evolution.rollback"
 
-    # Benchmark events (Phase 2)
-    BENCHMARK_COMPLETED = "damascus.events.benchmark.completed"
-
-    # Research events (Phase 2)
-    RESEARCH_DISCOVERED = "damascus.events.research.discovered"
+    # Research events (Phase 2 — Milestone 2.6)
+    RESEARCH_STARTED = "damascus.events.research.started"
+    RESEARCH_FINDING_DISCOVERED = "damascus.events.research.finding_discovered"
+    RESEARCH_COMPLETED = "damascus.events.research.completed"
 
 
 @dataclass
