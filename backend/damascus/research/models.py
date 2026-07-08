@@ -108,7 +108,7 @@ class ResearchFinding(Base):
     relevance_score: Mapped[float] = mapped_column(Float, default=0.0)
     source_url: Mapped[str] = mapped_column(String(1024), default="")
     source_title: Mapped[str] = mapped_column(String(512), default="")
-    metadata: Mapped[dict] = mapped_column(JSONB, default=dict)
+    finding_metadata: Mapped[dict] = mapped_column(JSONB, default=dict)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
     task: Mapped[ResearchTask] = relationship("ResearchTask", back_populates="findings")

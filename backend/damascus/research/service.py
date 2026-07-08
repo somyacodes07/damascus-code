@@ -152,7 +152,7 @@ class ResearchService:
             relevance_score=relevance_score,
             source_url=source_url,
             source_title=source_title,
-            metadata=metadata or {},
+            finding_metadata=metadata or {},
         )
         session.add(finding)
         await session.flush()
