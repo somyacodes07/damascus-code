@@ -8,15 +8,28 @@ An intelligence operating system that executes, learns, and evolves.
 
 Damascus is a comprehensive intelligence operating system designed to execute complex workflows, learn from past executions, and evolve its capabilities. It features a robust backend infrastructure (FastAPI, PostgreSQL, Redis, Qdrant), a three-tier memory layer (working, episodic, semantic), and Ollama-backed single-agent execution with terminal and filesystem access. Everything can be managed seamlessly through its dedicated CLI and interactive dashboard.
 
-## Phase 1 (V1) — Foundation
+## Phase 2 (V2) — Intelligence
 
-This is the Phase 1 implementation of Damascus, providing:
+This is the Phase 2 implementation of Damascus, adding:
 
-- **Core Infrastructure**: FastAPI backend, PostgreSQL, Redis, Qdrant, NATS, MinIO
-- **Workspace & Workflow**: CRUD operations and basic sequential workflow execution  
-- **Memory Layer V1**: Working (Redis), Episodic (PostgreSQL), Semantic (Qdrant)
-- **Single Agent Execution**: Ollama-backed agents with terminal and filesystem tools
-- **CLI & TUI**: `damascus` command with interactive Textual dashboard
+- **Multi-Agent Teams**: Agent collaboration via typed message channels with budget controls.
+- **Capability-Aware Policy Routing**: Smart model routing policies (`LOCAL_FIRST`, `LOWEST_COST`, etc.) for Ollama, OpenAI, Anthropic, Gemini, and OpenRouter.
+- **Benchmark System**: Deterministic scoring (6 methods) + composite evaluations to compare versions.
+- **Evolution Engine (V1)**: Automatic opportunity detection, variant generation, and promotion.
+- **Research Layer**: Web search integration, finding extraction, and source tracking.
+
+---
+
+## V1 vs V2 Architectural Differences
+
+| Capability | Phase 1 (V1) | Phase 2 (V2) |
+| :--- | :--- | :--- |
+| **Agent Paradigm** | Single-agent execution | **Multi-Agent Teams** with typed message channels |
+| **Model Routing** | Hardcoded, priority-based fallback | **Capability-Aware Policy Routing** (6 policies) |
+| **Providers** | Ollama, basic OpenRouter fallback | Ollama, OpenAI, Anthropic, Gemini, OpenRouter |
+| **Benchmarks** | None | **Structured Benchmark Suite** + composite scoring |
+| **Self-Improvement**| None | **Evolution Engine** (Opportunity → Variant → Promotion) |
+| **Research** | None | **Research Layer** (Web search + finding extraction) |
 
 ---
 
@@ -29,19 +42,23 @@ This is the Phase 1 implementation of Damascus, providing:
 - Poetry (`pip install poetry`)
 - Just (`brew install just` or `cargo install just`)
 
-### 1. Start Infrastructure
+### 1. Start Infrastructure Services
+
+Damascus depends on multiple background services. Start them via Docker Compose:
 
 ```bash
 docker compose up -d
 ```
 
-Verify all services are healthy:
+Verify that PostgreSQL, Redis, Qdrant, NATS, and MinIO are healthy:
 
 ```bash
 docker compose ps
 ```
 
-### 2. Set Up Backend
+### 2. Run the Backend Server (Required for CLI/TUI)
+
+The CLI/TUI connects to the FastAPI backend at `localhost:8000`. **You must start the backend server before running CLI commands.**
 
 ```bash
 cd backend
@@ -50,15 +67,20 @@ poetry run alembic upgrade head
 poetry run uvicorn damascus.main:app --reload --port 8000
 ```
 
-Backend API: http://localhost:8000  
-API Docs: http://localhost:8000/docs
+* **Backend API**: http://localhost:8000  
+* **API Docs (Swagger)**: http://localhost:8000/docs
 
-### 3. Set Up CLI
+### 3. Set Up CLI & TUI Dashboard
+
+Open a new terminal window, navigate to the `cli/` directory, and run the following:
 
 ```bash
 cd cli
 poetry install
-damascus --help
+# Initialize a workspace
+poetry run damascus workspace create "My Workspace"
+# Launch the Text User Interface dashboard
+poetry run damascus tui
 ```
 
 ### 4. Configure Models (optional — Ollama recommended)
